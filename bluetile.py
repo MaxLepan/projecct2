@@ -167,7 +167,7 @@ class MyFeatureListener(FeatureListener):
             self._notifications += 1
             print(feature)
             proxyValue = sample.get_data()[0]
-            if proxyValue > 200:
+            if proxyValue > 50:
                 print("LOIN")
             else:
                 print("PROCHE")
@@ -208,11 +208,6 @@ def main(argv):
             if not discovered_devices:
                 print('No Bluetooth devices found. Exiting...\n')
                 sys.exit(0)
-            print('Available Bluetooth devices:')
-            i = 1
-            for device in discovered_devices:
-                print('%d) %s: [%s]' % (i, device.get_name(), device.get_tag()))
-                i += 1
 
             # Selecting a device.
 
@@ -250,7 +245,23 @@ def main(argv):
 
                 # Selecting a feature.
 
-                feature = features[1]
+                while True:
+                    choice = int(input('\nSelect a feature '
+                                       '(\'0\' to disconnect): '))
+                    if choice >= 0 and choice <= len(features):
+                        break
+                if choice == 0:
+                    # Disconnecting from the device.
+                    print('\nDisconnecting from %s...' % (device.get_name()))
+                    if not device.disconnect():
+                        print('Disconnection failed.\n')
+                        continue
+                    device.remove_listener(node_listener)
+                    # Resetting discovery.
+                    manager.reset_discovery()
+                    # Going back to the list of devices.
+                    break
+                feature = features[choice - 1]
 
                 # Enabling notifications.
                 feature_listener = MyFeatureListener()
