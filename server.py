@@ -22,5 +22,6 @@ class SimpleEcho(WebSocket):
         
         
 server = WebSocketServer('', 8000, SimpleEcho)
+print("server online")
 server.serve_forever()
 

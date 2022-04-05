@@ -76,7 +76,7 @@ INTRO = """##################
 SCANNING_TIME_s = 5
 
 # Number of notifications to get before disabling them.
-NOTIFICATIONS = 100
+NOTIFICATIONS = 20
 
 
 # FUNCTIONS
@@ -165,9 +165,9 @@ class MyFeatureListener(FeatureListener):
 
         if self._notifications < NOTIFICATIONS:
             self._notifications += 1
-            print(feature)
+            print(feature, sample.get_description()[0].get_name())
             proxyValue = sample.get_data()[0]
-            if feature == 'proximity':
+            if sample.get_description()[0].get_name() == "Proximity":
                 if proxyValue > 50:
                     print("LOIN")
                 else:
