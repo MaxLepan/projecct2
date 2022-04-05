@@ -167,10 +167,11 @@ class MyFeatureListener(FeatureListener):
             self._notifications += 1
             print(feature)
             proxyValue = sample.get_data()[0]
-            if proxyValue > 50:
-                print("LOIN")
-            else:
-                print("PROCHE")
+            if feature == 'proximity':
+                if proxyValue > 50:
+                    print("LOIN")
+                else:
+                    print("PROCHE")
 
 
 # MAIN APPLICATION
@@ -208,6 +209,11 @@ def main(argv):
             if not discovered_devices:
                 print('No Bluetooth devices found. Exiting...\n')
                 sys.exit(0)
+            print('Available Bluetooth devices:')
+            i = 1
+            for device in discovered_devices:
+                print('%d) %s: [%s]' % (i, device.get_name(), device.get_tag()))
+                i += 1
 
             # Selecting a device.
 
