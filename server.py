@@ -7,10 +7,12 @@ class SimpleEcho(WebSocket):
     def handle(self):
         print(self.data)
         protocol = ProtocolReader(self.data)
+        protocol.decodeProtocol()
         sensor = protocol.sensor
+        print(sensor)
         if (sensor == "button"):
             os.system("raspistill -o Desktop/newimage.png")
-        self.send_message(self.data)
+        #self.send_message(self.data)
         
     def connected(self):
         print(self.address, 'connected')
