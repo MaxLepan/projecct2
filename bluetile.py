@@ -53,6 +53,8 @@ from blue_st_sdk.node import NodeListener
 from blue_st_sdk.feature import FeatureListener
 from blue_st_sdk.features.audio.adpcm.feature_audio_adpcm import FeatureAudioADPCM
 from blue_st_sdk.features.audio.adpcm.feature_audio_adpcm_sync import FeatureAudioADPCMSync
+import websocket
+from ProtocolBuilder import ProtocolBuilder
 
 # PRECONDITIONS
 #
@@ -78,6 +80,7 @@ SCANNING_TIME_s = 5
 # Number of notifications to get before disabling them.
 NOTIFICATIONS = 20
 
+ws = websocket.create_connection("ws://localhost:8000")
 
 # FUNCTIONS
 
@@ -167,6 +170,10 @@ class MyFeatureListener(FeatureListener):
             self._notifications += 1
             print(feature, sample.get_description()[0].get_name())
             proxyValue = sample.get_data()[0]
+            name = sample.get_description()[0].get_name()
+            if self._notifications == NOTIFICATIONS:
+                protocol = ProtocolBuilder(str(name), str(proxyValue))
+                ws.send(protocol.buildProtocol())
             if sample.get_description()[0].get_name() == "Proximity":
                 if proxyValue > 50:
                     print("LOIN")
