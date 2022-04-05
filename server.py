@@ -1,5 +1,6 @@
 from simple_websocket_server import WebSocketServer, WebSocket
 from ProtocolReader import ProtocolReader
+import os
 
 class SimpleEcho(WebSocket):
     
@@ -7,6 +8,8 @@ class SimpleEcho(WebSocket):
         print(self.data)
         protocol = ProtocolReader(self.data)
         sensor = protocol.sensor
+        if (sensor == "button"):
+            os.system("raspistill -o Desktop/newimage.png")
         self.send_message(self.data)
         
     def connected(self):
