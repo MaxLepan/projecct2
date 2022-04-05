@@ -78,7 +78,7 @@ INTRO = """##################
 SCANNING_TIME_s = 5
 
 # Number of notifications to get before disabling them.
-NOTIFICATIONS = 20
+NOTIFICATIONS = 2
 
 ws = websocket.create_connection("ws://localhost:8000")
 
@@ -168,11 +168,11 @@ class MyFeatureListener(FeatureListener):
 
         if self._notifications < NOTIFICATIONS:
             self._notifications += 1
-            print(feature, sample.get_description()[0].get_name())
+            print(feature)
             proxyValue = sample.get_data()[0]
             name = sample.get_description()[0].get_name()
             if self._notifications == NOTIFICATIONS:
-                protocol = ProtocolBuilder(str(name), str(proxyValue))
+                protocol = ProtocolBuilder(str(name), proxyValue)
                 ws.send(protocol.buildProtocol())
             if sample.get_description()[0].get_name() == "Proximity":
                 if proxyValue > 50:
