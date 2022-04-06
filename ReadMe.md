@@ -7,13 +7,22 @@
 ## Branchements
 
 ![branchements](img/branchement.jpg)
+![boutonsCouleurs](img/boutonsCouleurs.jpg)
+![breadboard](img/breadboard.jpg)
 
 ### Pins
 
-- Bouton : 
+- Bouton pour caméra : 
   - Signal sur alim 3.3V (pin 17)
   - Negative sur GPIO 17 (pin 11)
-- DHT11 : 
-  - Signal sur GPIO 14 (pin 8)
-  - Positive sur alim 3.3V (pin 1)
-  - Negative sur masse (pin 6)
+- Bouton pour enregistrement (bleu):
+  - Positive sur alim 3.3v
+  - Negative sur GPIO 18 (pin 12)
+- Bouton pour écoute (vert):
+  - Positive sur alim 3.3v
+  - Negative sur GPIO 4 (pin 7)
+- Camera:
+  - PiCamera
+  - Nape sur le Pi
+- Micro/Audio:
+  - Connecté par USB
