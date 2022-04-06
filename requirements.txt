@@ -1,0 +1,5 @@
+simple_websocket_server
+websocket-client
+picamera
+RPi.GPIO
+sox

@@ -1,5 +1,9 @@
 # Project 2
 
+## Installation
+
+`pip install -r requirements.txt`
+
 ## Branchements
 
 ![branchements](img/branchement.jpg)
