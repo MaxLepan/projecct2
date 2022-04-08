@@ -1,0 +1,5 @@
+0 fond
+1 lines
+2 star
+3 circle
+4 hashtag

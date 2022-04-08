@@ -9,4 +9,4 @@ class Camera:
         self.name = name
     
     def take_photo(self):
-        self.process = subprocess.Popen(["libcamera-still", "-t", "2000", "-o",self.name])
+        self.process = subprocess.Popen(["libcamera-still", "-t", "200", "-o",self.name])
