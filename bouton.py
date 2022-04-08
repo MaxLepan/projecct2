@@ -1,9 +1,9 @@
 import time
 import websocket
 import RPi.GPIO as GPIO
-from ProtocolBuilder import ProtocolBuilder
-from micro import Micro
-from audio import Audio
+from classes.ProtocolBuilder import ProtocolBuilder
+from classes.Micro import Micro
+from classes.Audio import Audio
 
 GPIO.cleanup()
 GPIO.setwarnings(False)

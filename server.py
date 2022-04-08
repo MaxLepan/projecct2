@@ -14,7 +14,7 @@ class Stockage:
 class SimpleEcho(WebSocket):
 
     stockage = Stockage()
-    camera = Camera("img/photo_analyse.png")
+    camera = Camera("./img/photo_analyse.png")
     
     def handle(self):
         protocol = ProtocolReader(self.data)
