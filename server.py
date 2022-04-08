@@ -1,7 +1,7 @@
 from simple_websocket_server import WebSocketServer, WebSocket
-from ProtocolReader import ProtocolReader
 import os
-from camera import Camera
+from classes.Camera import Camera
+from classes.ProtocolReader import ProtocolReader
 
 
 class Stockage:
