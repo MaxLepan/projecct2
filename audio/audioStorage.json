@@ -1,13 +1,5 @@
 {
     "audioFiles": [
-        {
-            "1": "./audio/audioFiles/audio.ogg"
-        },
-        {
-            "2": "audio/audioFiles/audio_2022-04-08_14-49-56.ogg"
-        },
-        {
-            "3": "audio/audioFiles/audio_2022-04-08_14-50-36.ogg"
-        }
+
     ]
 }
