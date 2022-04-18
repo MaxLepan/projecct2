@@ -3,6 +3,7 @@ import os
 from classes.Camera import Camera
 from classes.ProtocolReader import ProtocolReader
 from classes.Tensorflow import TensorFlow
+from classes.AudioGetter import AudioGetter
 import time
 
 
@@ -24,6 +25,7 @@ class SimpleEcho(WebSocket):
         protocol = ProtocolReader(self.data)
         protocol.decodeProtocol()
         sensor = protocol.sensor
+        # Takes photo
         if sensor == "button17":
             SimpleEcho.camera.take_photo()
             time.sleep(2)
@@ -38,6 +40,8 @@ class SimpleEcho(WebSocket):
         elif sensor == "button18":
             print("18")
         elif sensor == "button4":
+            audioGetter = AudioGetter(SimpleEcho.tensorflow.pattern)
+            audio.play_audio(audioGetter.get_audio())
             print("4")
         
     def connected(self):

@@ -19,20 +19,26 @@ audio = Audio()
 
 
 while True:
-    
+
+    # Takes photo
     if GPIO.input(17) == GPIO.HIGH:
         print("pushed")
         protocol = ProtocolBuilder("button17", "HIGH")
         ws.send(protocol.buildProtocol())
         time.sleep(2)
+
+    # Start audio recording
     if GPIO.input(18) == GPIO.HIGH:
         micro.start_recording()
         while GPIO.input(18) == GPIO.HIGH:
             time.sleep(0.1)
+
+    # Stops audio recording
     if GPIO.input(18) == GPIO.LOW:
         micro.stop_recording()
+
+    # Plays audio file
     if GPIO.input(4) == GPIO.HIGH:
-        audio.play_audio("audio/test.ogg")
         print("pushed")
         protocol = ProtocolBuilder("button4", "HIGH")
         ws.send(protocol.buildProtocol())

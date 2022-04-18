@@ -24,7 +24,7 @@ class Micro:
         
 
 # Uncomment to run tests
-micro = Micro()
-micro.start_recording()
-time.sleep(2)
-micro.stop_recording()
+#micro = Micro()
+#micro.start_recording()
+#time.sleep(2)
+#micro.stop_recording()

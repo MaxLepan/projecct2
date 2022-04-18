@@ -12,5 +12,5 @@ class AudioGetter:
         return [item for item in audioFile["audioFiles"] if item.get(self.uid)][0][self.uid]
 
 
-audioGetter = AudioGetter(12)
-print(audioGetter.get_audio())
+# audioGetter = AudioGetter(12)
+# print(audioGetter.get_audio())
