@@ -5,6 +5,7 @@ from classes.ProtocolReader import ProtocolReader
 from classes.Tensorflow import TensorFlow
 from classes.AudioGetter import AudioGetter
 from classes.Audio import Audio
+from classes.AudioStoring import AudioStoring
 import time
 
 
@@ -29,10 +30,19 @@ class SimpleEcho(WebSocket):
         sensor = protocol.sensor
         # Takes photo
         if sensor == "button17":
+            
+            # Scan pattern
             SimpleEcho.camera.take_photo()
             time.sleep(2)
             SimpleEcho.tensorflow.get_pattern()
             SimpleEcho.stockage.pattern = SimpleEcho.tensorflow.pattern
+            
+            # Plays audio at scan
+            audioGetter = AudioGetter(SimpleEcho.stockage.pattern)
+            print(audioGetter.get_audio())
+            audioFile = audioGetter.get_audio()
+            SimpleEcho.audio.play_audio(audioFile)
+            
             print(SimpleEcho.tensorflow.pattern)
         elif sensor == "temp":
             SimpleEcho.stockage.temp = protocol.value
@@ -45,10 +55,13 @@ class SimpleEcho(WebSocket):
             self.send_message(str(SimpleEcho.stockage.pattern))
             
         elif sensor == "button4":
-            audioGetter = AudioGetter(SimpleEcho.stockage.pattern)
-            print(audioGetter.get_audio())
-            audioFile = audioGetter.get_audio()
-            SimpleEcho.audio.play_audio(audioFile)
+            # audioGetter = AudioGetter(SimpleEcho.stockage.pattern)
+            # print(audioGetter.get_audio())
+            # audioFile = audioGetter.get_audio()
+            # SimpleEcho.audio.play_audio(audioFile)
+            audioDelete = AudioStoring("", SimpleEcho.stockage.pattern)
+            audioDelete.deleteAudio()
+            
             print("button4")
         
     def connected(self):

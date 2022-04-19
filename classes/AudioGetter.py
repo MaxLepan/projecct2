@@ -6,7 +6,6 @@ class AudioGetter:
         self.uid = str(uid)
 
     def get_audio(self):
-
         with open("./audio/audioStorage.json") as file:
             audioFile = json.load(file)
         for item in audioFile["audioFiles"]:
