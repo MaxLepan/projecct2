@@ -29,7 +29,10 @@ while True:
 
     # Start audio recording
     if GPIO.input(18) == GPIO.HIGH:
-        micro.start_recording()
+        protocol = ProtocolBuilder("button18", "on")
+        ws.send(protocol.buildProtocol())
+        pattern = ws.recv()
+        micro.start_recording(pattern)
         while GPIO.input(18) == GPIO.HIGH:
             time.sleep(0.1)
 

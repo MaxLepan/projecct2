@@ -4,6 +4,7 @@ from classes.Camera import Camera
 from classes.ProtocolReader import ProtocolReader
 from classes.Tensorflow import TensorFlow
 from classes.AudioGetter import AudioGetter
+from classes.Audio import Audio
 import time
 
 
@@ -20,6 +21,7 @@ class SimpleEcho(WebSocket):
     stockage = Stockage()
     camera = Camera("./img/photo_analyse.png")
     tensorflow = TensorFlow()
+    audio = Audio()
     
     def handle(self):
         protocol = ProtocolReader(self.data)
@@ -30,6 +32,7 @@ class SimpleEcho(WebSocket):
             SimpleEcho.camera.take_photo()
             time.sleep(2)
             SimpleEcho.tensorflow.get_pattern()
+            SimpleEcho.stockage.pattern = SimpleEcho.tensorflow.pattern
             print(SimpleEcho.tensorflow.pattern)
         elif sensor == "temp":
             SimpleEcho.stockage.temp = protocol.value
@@ -39,10 +42,14 @@ class SimpleEcho(WebSocket):
             print(protocol.value)
         elif sensor == "button18":
             print("18")
+            self.send_message(str(SimpleEcho.stockage.pattern))
+            
         elif sensor == "button4":
-            audioGetter = AudioGetter(SimpleEcho.tensorflow.pattern)
-            audio.play_audio(audioGetter.get_audio())
-            print("4")
+            audioGetter = AudioGetter(SimpleEcho.stockage.pattern)
+            print(audioGetter.get_audio())
+            audioFile = audioGetter.get_audio()
+            SimpleEcho.audio.play_audio(audioFile)
+            print("button4")
         
     def connected(self):
         print(self.address, 'connected')
@@ -55,3 +62,5 @@ server = WebSocketServer('', 8000, SimpleEcho)
 print("server online")
 server.serve_forever()
 
+# button = subprocess.Popen(["python", "bouton.py"])
+# print("All online")
