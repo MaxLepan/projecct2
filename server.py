@@ -1,5 +1,5 @@
 from simple_websocket_server import WebSocketServer, WebSocket
-import os
+import subprocess
 from classes.Camera import Camera
 from classes.ProtocolReader import ProtocolReader
 from classes.Tensorflow import TensorFlow
@@ -69,11 +69,23 @@ class SimpleEcho(WebSocket):
         
     def handle_close(self):
         print(self.address, 'closed')
+
+    def start_server_button(self):
+        button = subprocess.Popen(["echo", "button"])
+        server_on = 0
+        while True:
+            try:
+                button = subprocess.Popen(["python", "bouton.py"])
+                break
+            except button.SubprocessError:
+                if server_on == 0:
+                    server.serve_forever()
+                    server_on = 1
         
         
 server = WebSocketServer('', 8000, SimpleEcho)
 print("server online")
-server.serve_forever()
+server.start_server_button()
 
 # button = subprocess.Popen(["python", "bouton.py"])
 # print("All online")
