@@ -3,3 +3,4 @@ websocket-client
 picamera
 RPi.GPIO
 sox
+alsaaudio

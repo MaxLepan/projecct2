@@ -6,6 +6,7 @@ from classes.Tensorflow import TensorFlow
 from classes.AudioGetter import AudioGetter
 from classes.Audio import Audio
 from classes.AudioStoring import AudioStoring
+from classes.VolumeControl import VolumeControl
 import time
 
 
@@ -73,6 +74,8 @@ class SimpleEcho(WebSocket):
     def start_server_button(self):
         button = subprocess.Popen(["echo", "button"])
         server_on = 0
+        vs = VolumeControl("Volume")
+        vs.start()
         while True:
             try:
                 button = subprocess.Popen(["python", "bouton.py"])
