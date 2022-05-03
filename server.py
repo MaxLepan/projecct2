@@ -1,4 +1,5 @@
 from simple_websocket_server import WebSocketServer, WebSocket
+import os
 import subprocess
 from classes.Camera import Camera
 from classes.ProtocolReader import ProtocolReader
@@ -32,18 +33,19 @@ class SimpleEcho(WebSocket):
         if sensor == "button17":
             
             # Scan pattern
+            led = subprocess.Popen(["python", "./led.py"])
             SimpleEcho.camera.take_photo()
             time.sleep(2)
             SimpleEcho.tensorflow.get_pattern()
             SimpleEcho.stockage.pattern = SimpleEcho.tensorflow.pattern
             
             # Plays audio at scan
+            print(SimpleEcho.stockage.pattern)
             audioGetter = AudioGetter(SimpleEcho.stockage.pattern)
-            print(audioGetter.get_audio())
             audioFile = audioGetter.get_audio()
             SimpleEcho.audio.play_audio(audioFile)
+            led.terminate()
             
-            print(SimpleEcho.tensorflow.pattern)
         elif sensor == "temp":
             SimpleEcho.stockage.temp = protocol.value
             print(protocol.value)
@@ -69,23 +71,11 @@ class SimpleEcho(WebSocket):
         
     def handle_close(self):
         print(self.address, 'closed')
-
-    def start_server_button(self):
-        button = subprocess.Popen(["echo", "button"])
-        server_on = 0
-        while True:
-            try:
-                button = subprocess.Popen(["python", "bouton.py"])
-                break
-            except button.SubprocessError:
-                if server_on == 0:
-                    server.serve_forever()
-                    server_on = 1
         
         
-server = WebSocketServer('', 8000, SimpleEcho)
+server = WebSocketServer('', 8080, SimpleEcho)
 print("server online")
-server.start_server_button()
+server.serve_forever()
 
-# button = subprocess.Popen(["python", "bouton.py"])
-# print("All online")
+button = subprocess.Popen(["python", "bouton.py"])
+print("All online")

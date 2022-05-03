@@ -12,7 +12,7 @@ GPIO.setup(17, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 GPIO.setup(18, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 GPIO.setup(4, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 print(GPIO.input(17))
-ws = websocket.create_connection("ws://localhost:8000")
+ws = websocket.create_connection("ws://localhost:8080")
 
 micro = Micro()
 audio = Audio()
