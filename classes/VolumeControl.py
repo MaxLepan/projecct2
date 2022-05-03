@@ -69,3 +69,7 @@ class VolumeControl:
             file = open(self.saveFilePath, "w")
             file.write(f"{self.counter}")
             self.isSave = True
+
+#Uncomment to run tests
+#vs = VolumeControl("Volume")
+#vs.start()
