@@ -12,8 +12,6 @@ import time
 class Stockage:
 
     def __init__(self):
-        self.temp = 0
-        self.prox = 0,
         self.pattern = 0
 
 
@@ -44,21 +42,12 @@ class SimpleEcho(WebSocket):
             SimpleEcho.audio.play_audio(audioFile)
             
             print(SimpleEcho.tensorflow.pattern)
-        elif sensor == "temp":
-            SimpleEcho.stockage.temp = protocol.value
-            print(protocol.value)
-        elif sensor == "Proximity":
-            SimpleEcho.stockage.prox = protocol.value
-            print(protocol.value)
         elif sensor == "button18":
             print("18")
             self.send_message(str(SimpleEcho.stockage.pattern))
-            
+
+        # Deletes audio file
         elif sensor == "button4":
-            # audioGetter = AudioGetter(SimpleEcho.stockage.pattern)
-            # print(audioGetter.get_audio())
-            # audioFile = audioGetter.get_audio()
-            # SimpleEcho.audio.play_audio(audioFile)
             audioDelete = AudioStoring("", SimpleEcho.stockage.pattern)
             audioDelete.deleteAudio()
             

@@ -11,8 +11,8 @@ class AudioGetter:
         for item in audioFile["audioFiles"]:
             if item.get(self.uid):
                 return item[self.uid]
-        #return [item for item in audioFile["audioFiles"] if item.get(self.uid)]
-        return "audio/audioFiles/test.ogg"
+        # Plays messageNotRecorded.ogg if there is no registered message for that pattern
+        return "audio/systemAudio/messageNotRecorded.ogg"
 
 
 #audioGetter = AudioGetter(0)
