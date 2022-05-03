@@ -11,7 +11,7 @@ class VolumeControl:
     counter = 50
     mixer = alsaaudio.Mixer()
     isSave = True
-    saveFilePath = "./db/sonor-volume.txt"
+    saveFilePath = "./database/sound-volume.txt"
 
     def __init__(self, name: str) -> None:
         self.name = name
@@ -45,7 +45,6 @@ class VolumeControl:
                 if self.counter > 0:
                     self.counter -= 1
             self.mixer.setvolume(self.counter)
-            os.system("play audio/systemAudio/soundChanged.ogg")
             print(self.mixer.getvolume())
             self.setSave()
 
@@ -69,6 +68,7 @@ class VolumeControl:
             file = open(self.saveFilePath, "w")
             file.write(f"{self.counter}")
             self.isSave = True
+            os.system("play audio/systemAudio/soundChanged.ogg")
 
 #Uncomment to run tests
 #vs = VolumeControl("Volume")
