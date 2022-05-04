@@ -36,6 +36,7 @@ class SimpleEcho(WebSocket):
             led = subprocess.Popen(["python", "./led.py"])
             SimpleEcho.camera.take_photo()
             time.sleep(2)
+            print("photo")
             SimpleEcho.tensorflow.get_pattern()
             SimpleEcho.stockage.pattern = SimpleEcho.tensorflow.pattern
             

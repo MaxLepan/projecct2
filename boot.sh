@@ -1,6 +1,6 @@
-sleep 15
+sleep 20
 
 cd /home/pi/Documents/project2
 python ./server.py &
-sleep 15
+sleep 30
 python ./bouton.py

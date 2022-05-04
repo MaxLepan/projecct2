@@ -46,7 +46,7 @@ signal.signal(signal.SIGTERM, end_process)
 
 try:
 	while True:
-		setColor(0xFFFFFF)
+		setColor(0xAA5511)
 except :
 	p_R.stop()
 	p_G.stop()
