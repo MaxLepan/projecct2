@@ -1,11 +1,13 @@
 from simple_websocket_server import WebSocketServer, WebSocket
 import os
+import subprocess
 from classes.Camera import Camera
 from classes.ProtocolReader import ProtocolReader
 from classes.Tensorflow import TensorFlow
 from classes.AudioGetter import AudioGetter
 from classes.Audio import Audio
 from classes.AudioStoring import AudioStoring
+from classes.VolumeControl import VolumeControl
 import time
 
 
@@ -30,16 +32,19 @@ class SimpleEcho(WebSocket):
         if sensor == "button17":
             
             # Scan pattern
+            led = subprocess.Popen(["python", "./led.py"])
             SimpleEcho.camera.take_photo()
             time.sleep(2)
+            print("photo")
             SimpleEcho.tensorflow.get_pattern()
             SimpleEcho.stockage.pattern = SimpleEcho.tensorflow.pattern
             
             # Plays audio at scan
+            print(SimpleEcho.stockage.pattern)
             audioGetter = AudioGetter(SimpleEcho.stockage.pattern)
-            print(audioGetter.get_audio())
             audioFile = audioGetter.get_audio()
             SimpleEcho.audio.play_audio(audioFile)
+            led.terminate()
             
             print(SimpleEcho.tensorflow.pattern)
         elif sensor == "button18":
@@ -60,7 +65,7 @@ class SimpleEcho(WebSocket):
         print(self.address, 'closed')
         
         
-server = WebSocketServer('', 8000, SimpleEcho)
+server = WebSocketServer('', 8080, SimpleEcho)
 print("server online")
 server.serve_forever()
 
