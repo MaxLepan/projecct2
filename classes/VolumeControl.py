@@ -1,6 +1,5 @@
 from RPi import GPIO
 from time import sleep
-import alsaaudio
 import os
 from datetime import datetime
 
@@ -9,7 +8,6 @@ class VolumeControl:
     clk = 17
     dt = 18
     counter = 50
-    mixer = alsaaudio.Mixer()
     isSave = True
     saveFilePath = "./database/sound-volume.txt"
 
@@ -44,8 +42,6 @@ class VolumeControl:
             else:
                 if self.counter > 0:
                     self.counter -= 1
-            self.mixer.setvolume(self.counter)
-            print(self.mixer.getvolume())
             self.setSave()
 
         self.save()
@@ -63,13 +59,13 @@ class VolumeControl:
 
     def save(self):
         delta = datetime.now() - self.lastChange
-        if int(delta.total_seconds()) > 1 and self.isSave == False:
+        if int(delta.total_seconds()) > 0.01 and self.isSave == False:
             print("Save")
             file = open(self.saveFilePath, "w")
             file.write(f"{self.counter}")
             self.isSave = True
-            os.system("play audio/systemAudio/soundChanged.ogg")
+            os.system(f"play -v {self.counter} audio/systemAudio/soundChanged.ogg")
 
 #Uncomment to run tests
-#vs = VolumeControl("Volume")
-#vs.start()
+# vs = VolumeControl("Volume")
+# vs.start()
