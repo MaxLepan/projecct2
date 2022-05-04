@@ -7,6 +7,7 @@ from classes.Tensorflow import TensorFlow
 from classes.AudioGetter import AudioGetter
 from classes.Audio import Audio
 from classes.AudioStoring import AudioStoring
+from classes.VolumeControl import VolumeControl
 import time
 
 
@@ -78,5 +79,5 @@ server = WebSocketServer('', 8080, SimpleEcho)
 print("server online")
 server.serve_forever()
 
-button = subprocess.Popen(["python", "bouton.py"])
-print("All online")
+# button = subprocess.Popen(["python", "bouton.py"])
+# print("All online")
