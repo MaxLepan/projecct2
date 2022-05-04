@@ -7,7 +7,7 @@ from classes.AudioStoring import AudioStoring
 from classes.ButtonRec import ButtonRec
 from classes.ButtonDelete import ButtonDelete
 from classes.ButtonCamera import ButtonCamera
-from classes.VolumeControl import VolumeControl
+#from classes.VolumeControl import VolumeControl
 
 
 class Stockage:
@@ -20,39 +20,22 @@ class Stockage:
 class SimpleEcho(WebSocket):
 
     stockage = Stockage()
-    camera = Camera("./img/photo_analyse.png")
-    tensorflow = TensorFlow()
-    audio = Audio()
     buttonRec = ButtonRec()
     buttonDelete = ButtonDelete()
     buttonCamera = ButtonCamera("./img/photo_analyse.png")
-    volumeControl = VolumeControl("Volume")
+    #volumeControl = VolumeControl("Volume")
     
     def handle(self):
         protocol = ProtocolReader(self.data)
         protocol.decodeProtocol()
         sensor = protocol.sensor
-        # Takes photo
+        # Takes photoAudio
         if sensor == "button17":
-            SimpleEcho.stockage.pattern = SimpleEcho.buttonCamera.action(SimpleEcho.stockage.mode)
-            
-            # Scan pattern
-            """ led = subprocess.Popen(["python", "./led.py"])
-            SimpleEcho.camera.take_photo()
-            time.sleep(2)
-            print("photo")
-            SimpleEcho.tensorflow.get_pattern()
-            SimpleEcho.stockage.pattern = SimpleEcho.tensorflow.pattern
-            
-            # Plays audio at scan
-            print(SimpleEcho.stockage.pattern)
-            audioGetter = AudioGetter(SimpleEcho.stockage.pattern)
-            audioFile = audioGetter.get_audio()
-            SimpleEcho.audio.play_audio(audioFile)
-            led.terminate() """
-            
+            SimpleEcho.buttonCamera.action(SimpleEcho.stockage.mode)
+            SimpleEcho.stockage.pattern = ButtonCamera.pattern            
             print(SimpleEcho.stockage.pattern)
         elif sensor == "button18":
+            print(SimpleEcho.stockage.pattern)
             SimpleEcho.buttonRec.action(SimpleEcho.stockage.mode)
             self.send_message(str(SimpleEcho.stockage.pattern))
 
@@ -66,7 +49,7 @@ class SimpleEcho(WebSocket):
         
     def connected(self):
         print(self.address, 'connected')
-        SimpleEcho.volumeControl.start()
+        #SimpleEcho.volumeControl.start()
         
     def handle_close(self):
         print(self.address, 'closed')

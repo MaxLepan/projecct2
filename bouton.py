@@ -32,6 +32,7 @@ while True:
         protocol = ProtocolBuilder("button18", "on")
         ws.send(protocol.buildProtocol())
         pattern = ws.recv()
+        print(pattern)
         micro.start_recording(pattern)
         while GPIO.input(18) == GPIO.HIGH:
             time.sleep(0.1)

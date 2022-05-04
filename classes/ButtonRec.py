@@ -1,4 +1,4 @@
-from Micro import Micro
+from .Micro import Micro
 
 class ButtonRec:
     micro = Micro()
