@@ -2,3 +2,4 @@ simple_websocket_server
 websocket-client
 RPi.GPIO
 sox
+alsaaudio
