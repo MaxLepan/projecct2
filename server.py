@@ -1,20 +1,18 @@
+import os
 from simple_websocket_server import WebSocketServer, WebSocket
-from classes.Camera import Camera
 from classes.ProtocolReader import ProtocolReader
-from classes.Tensorflow import TensorFlow
-from classes.Audio import Audio
 from classes.AudioStoring import AudioStoring
 from classes.ButtonRec import ButtonRec
 from classes.ButtonDelete import ButtonDelete
 from classes.ButtonCamera import ButtonCamera
-#from classes.VolumeControl import VolumeControl
 
 
 class Stockage:
 
     def __init__(self):
         self.pattern = 0
-        self.mode = 1
+        self.mode = 1,
+        self.volume = 100
 
 
 class SimpleEcho(WebSocket):
@@ -23,7 +21,7 @@ class SimpleEcho(WebSocket):
     buttonRec = ButtonRec()
     buttonDelete = ButtonDelete()
     buttonCamera = ButtonCamera("./img/photo_analyse.png")
-    #volumeControl = VolumeControl("Volume")
+    patternSaved = False
     
     def handle(self):
         protocol = ProtocolReader(self.data)
@@ -31,23 +29,31 @@ class SimpleEcho(WebSocket):
         sensor = protocol.sensor
         modeFile = open("./database/mode.txt", "r")
         SimpleEcho.stockage.mode = int(modeFile.readline())
+        volumeFile = open("./database/sound-volume.txt", "r")
+        SimpleEcho.stockage.volume = int(volumeFile.readline())
         print(SimpleEcho.stockage.mode)
         # Takes photoAudio
         if sensor == "button17":
             SimpleEcho.buttonCamera.action(SimpleEcho.stockage.mode)
             SimpleEcho.stockage.pattern = ButtonCamera.pattern            
             print(SimpleEcho.stockage.pattern)
+            SimpleEcho.patternSaved = True
+
+        # Send pattern to save message
         elif sensor == "button18":
             print(SimpleEcho.stockage.pattern)
-            SimpleEcho.buttonRec.action(SimpleEcho.stockage.mode)
-            self.send_message(str(SimpleEcho.stockage.pattern))
+            if (SimpleEcho.patternSaved):
+                SimpleEcho.buttonRec.action(SimpleEcho.stockage.mode)
+                self.send_message(str(SimpleEcho.stockage.pattern))
+            else:
+                os.system(f"play -v {SimpleEcho.stockage.volume/100} audio/systemAudio/claque.ogg")
 
         # Deletes audio file
         elif sensor == "button4":
-            SimpleEcho.buttonDelete.action(SimpleEcho.stockage.mode)
-            audioDelete = AudioStoring("", SimpleEcho.stockage.pattern)
-            audioDelete.deleteAudio()
-            
+            if (SimpleEcho.patternSaved):
+                SimpleEcho.buttonDelete.action(SimpleEcho.stockage.mode, SimpleEcho.stockage.pattern)
+            else:
+                os.system(f"play -v {SimpleEcho.stockage.volume/100} audio/systemAudio/claque.ogg")
             print("button4")
         
     def connected(self):

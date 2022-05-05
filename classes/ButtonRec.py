@@ -1,5 +1,7 @@
+import os
 from .Micro import Micro
 from .Audio import Audio
+from .AudioGetter import AudioGetter
 
 class ButtonRec:
     volume = 100
@@ -18,12 +20,18 @@ class ButtonRec:
         ButtonRec.micro.stop_recording()
 
     def mode_2_rec(self, pattern):
-        self.audio.play_audio("audio/systemAudio/start-mode-2.ogg", ButtonRec.volume)
-        ButtonRec.micro.start_recording(pattern)
+        audioGet = AudioGetter(self.tensorflow.pattern)
+        audioFile = audioGet.get_audio()
+        if "messageNotRecorded" in audioFile:
+            ButtonRec.micro.start_recording(pattern)
+        else:
+            os.system(f"play -v {self.volume/100} audio/systemAudio/claque.ogg")
     
     def mode_2_stop_rec(self):
         ButtonRec.micro.stop_recording()
+        self.audio.play_audio("audio/systemAudio/soundChanged.ogg", ButtonRec.volume)
         self.audio.play_audio("audio/systemAudio/start-mode-2.ogg", ButtonRec.volume)
+
 
     def mode_3_rec(self, pattern):
         self.audio.play_audio("audio/systemAudio/start-mode-3.ogg", ButtonRec.volume)
@@ -34,7 +42,7 @@ class ButtonRec:
         self.audio.play_audio("audio/systemAudio/start-mode-3.ogg", ButtonRec.volume)
 
     def mode_2_audio(self):
-        self.audio.play_audio("audio/systemAudio/start-mode-2.ogg", ButtonRec.volume)
+        return 
     
     def mode_3_audio(self):
         self.audio.play_audio("audio/systemAudio/start-mode-3.ogg", ButtonRec.volume)

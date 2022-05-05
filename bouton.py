@@ -1,9 +1,11 @@
 import time
 import websocket
+import os
 import RPi.GPIO as GPIO
 from classes.ProtocolBuilder import ProtocolBuilder
 from classes.Micro import Micro
 from classes.Audio import Audio
+from datetime import datetime
 
 GPIO.cleanup()
 GPIO.setwarnings(False)
@@ -16,10 +18,14 @@ ws = websocket.create_connection("ws://localhost:8080")
 
 micro = Micro()
 audio = Audio()
-
+DelMode = False
+delta = datetime.now()
+deleteTime = datetime.now()
 
 while True:
-
+    time_now = datetime.now() - deleteTime
+    if int(time_now.total_seconds()) < 5:
+        DelMode = False
     # Takes photo
     if GPIO.input(17) == GPIO.HIGH:
         print("pushed")
@@ -41,10 +47,18 @@ while True:
     if GPIO.input(18) == GPIO.LOW:
         micro.stop_recording()
 
-    # Plays audio file
+    # Delete audio file
     if GPIO.input(4) == GPIO.HIGH:
-        print("pushed")
-        protocol = ProtocolBuilder("button4", "HIGH")
-        ws.send(protocol.buildProtocol())
-        time.sleep(2)
+        if DelMode:
+            print("pushed")
+            protocol = ProtocolBuilder("button4", "HIGH")
+            ws.send(protocol.buildProtocol())
+            time.sleep(2)
+            DelMode = False
+        else:
+            volumeFile = open("./database/sound-volume.txt", "r")
+            volume = int(volumeFile.readline())
+            os.system(f"play -v {volume/100} audio/systemAudio/soundChanged.ogg")
+            DelMode = True
+            deleteTime = datetime.now()
     

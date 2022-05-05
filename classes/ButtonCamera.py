@@ -40,6 +40,9 @@ class ButtonCamera:
 
         audioGet = AudioGetter(self.tensorflow.pattern)
         audioFile = audioGet.get_audio()
+        if "messageNotRecorded" in audioFile:
+            self.audio.play_audio("./audio/systemAudio/claque.ogg", ButtonCamera.volume)
+        
         self.audio.play_audio(audioFile, ButtonCamera.volume)
         led.terminate()
         ButtonCamera.pattern = self.tensorflow.pattern
