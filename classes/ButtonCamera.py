@@ -7,6 +7,7 @@ import time
 
 class ButtonCamera:
     pattern = 0
+    volume = 100
 
     def __init__(self, file):
         self.camera = Camera(file)
@@ -21,15 +22,46 @@ class ButtonCamera:
         self.tensorflow.get_pattern()
         print(self.tensorflow.pattern)
 
-        file = open("./database/sound-volume.txt", "r")
-        volume = int(file.readline())
+        audioGet = AudioGetter(self.tensorflow.pattern)
+        audioFile = audioGet.get_audio()
+        self.audio.play_audio(audioFile, ButtonCamera.volume)
+        led.terminate()
+        ButtonCamera.pattern = self.tensorflow.pattern
+
+    def mode_2(self):
+        self.audio.play_audio('./audio/systemAudio/messageNotRecorded.ogg', ButtonCamera.volume)
+
+        led = subprocess.Popen(["python", "./led.py"])
+        self.camera.take_photo()
+        time.sleep(2)
+        print("photo")
+        self.tensorflow.get_pattern()
+        print(self.tensorflow.pattern)
 
         audioGet = AudioGetter(self.tensorflow.pattern)
         audioFile = audioGet.get_audio()
-        self.audio.play_audio(audioFile, volume)
+        self.audio.play_audio(audioFile, ButtonCamera.volume)
+        led.terminate()
+        ButtonCamera.pattern = self.tensorflow.pattern
+
+    def mode_3(self):
+        self.audio.play_audio('./audio/systemAudio/claque.ogg', ButtonCamera.volume)
+
+        led = subprocess.Popen(["python", "./led.py"])
+        self.camera.take_photo()
+        time.sleep(2)
+        print("photo")
+        self.tensorflow.get_pattern()
+        print(self.tensorflow.pattern)
+
+        audioGet = AudioGetter(self.tensorflow.pattern)
+        audioFile = audioGet.get_audio()
+        self.audio.play_audio(audioFile, ButtonCamera.volume)
         led.terminate()
         ButtonCamera.pattern = self.tensorflow.pattern
 
     def action(self, mode):
+        file = open("./database/sound-volume.txt", "r")
+        ButtonCamera.volume = int(file.readline())
         if mode == 1:
             self.mode_1()

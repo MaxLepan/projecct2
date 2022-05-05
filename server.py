@@ -29,6 +29,8 @@ class SimpleEcho(WebSocket):
         protocol = ProtocolReader(self.data)
         protocol.decodeProtocol()
         sensor = protocol.sensor
+        modeFile = open("./database/mode.txt", "r")
+        SimpleEcho.stockage.mode = int(modeFile.readline())
         # Takes photoAudio
         if sensor == "button17":
             SimpleEcho.buttonCamera.action(SimpleEcho.stockage.mode)

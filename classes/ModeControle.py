@@ -5,11 +5,11 @@ from datetime import datetime
 
 
 class VolumeControl:
-    clk = 24
-    dt = 23
+    clk = 16
+    dt = 12
     counter = 50
     isSave = True
-    saveFilePath = "./database/sound-volume.txt"
+    saveFilePath = "./database/mode.txt"
 
     def __init__(self, name: str) -> None:
         self.name = name
@@ -23,7 +23,7 @@ class VolumeControl:
         print(self.name, " is working !")
         try:
             while True:
-                self.changeVolume()
+                self.changeMode()
         finally:
             GPIO.cleanup()
 
@@ -32,17 +32,16 @@ class VolumeControl:
         GPIO.setup(self.clk, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
         GPIO.setup(self.dt, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
-    def changeVolume(self):
+    def changeMode(self):
         clkState = GPIO.input(self.clk)
         dtState = GPIO.input(self.dt)
         if clkState != self.clkLastState:
             if dtState != clkState:
-                if self.counter < 150:
+                if self.counter < 3:
                     self.counter += 1
             else:
-                if self.counter > 0:
+                if self.counter > 1:
                     self.counter -= 1
-            print(self.counter)
             self.setSave()
 
         self.save()
@@ -65,9 +64,6 @@ class VolumeControl:
             file = open(self.saveFilePath, "w")
             file.write(f"{self.counter}")
             self.isSave = True
-
-            os.system(f"play -v {self.counter/100} audio/systemAudio/soundChanged.ogg")
-
-#Uncomment to run tests
-vs = VolumeControl("Volume")
-vs.start()
+            volumeFile = open("./database/sound-volume.txt", "r")
+            volume = int(volumeFile.readline())
+            os.system(f"play -v {volume/100} audio/systemAudio/start-mode-{self.counter}.ogg")
