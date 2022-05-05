@@ -27,6 +27,7 @@ class SimpleEcho(WebSocket):
         protocol = ProtocolReader(self.data)
         protocol.decodeProtocol()
         sensor = protocol.sensor
+        value = protocol.value
         modeFile = open("./database/mode.txt", "r")
         SimpleEcho.stockage.mode = int(modeFile.readline())
         volumeFile = open("./database/sound-volume.txt", "r")
@@ -41,12 +42,16 @@ class SimpleEcho(WebSocket):
 
         # Send pattern to save message
         elif sensor == "button18":
-            print(SimpleEcho.stockage.pattern)
-            if (SimpleEcho.patternSaved):
-                SimpleEcho.buttonRec.action(SimpleEcho.stockage.mode)
-                self.send_message(str(SimpleEcho.stockage.pattern))
-            else:
-                os.system(f"play -v {SimpleEcho.stockage.volume/100} audio/systemAudio/claque.ogg")
+            if value == "on":
+                print(SimpleEcho.stockage.pattern)
+                if (SimpleEcho.patternSaved):
+                    SimpleEcho.buttonRec.action(SimpleEcho.stockage.mode)
+                    SimpleEcho.buttonRec.action_button_on(SimpleEcho.stockage.mode, SimpleEcho.stockage.pattern)
+                else:
+                    os.system(f"play -v {SimpleEcho.stockage.volume/100} audio/systemAudio/claque.ogg")
+                    self.send_message("No")
+            if value == "off":
+                SimpleEcho.buttonRec.action_button_off(SimpleEcho.stockage.mode)
 
         # Deletes audio file
         elif sensor == "button4":

@@ -6,6 +6,7 @@ from classes.ProtocolBuilder import ProtocolBuilder
 from classes.Micro import Micro
 from classes.Audio import Audio
 from datetime import datetime
+from classes.ButtonRec import ButtonRec
 
 GPIO.cleanup()
 GPIO.setwarnings(False)
@@ -18,9 +19,10 @@ ws = websocket.create_connection("ws://localhost:8080")
 
 micro = Micro()
 audio = Audio()
+buttonRec = ButtonRec()
 DelMode = False
-delta = datetime.now()
 deleteTime = datetime.now()
+saveMode = False
 
 while True:
     time_now = datetime.now() - deleteTime
@@ -38,14 +40,16 @@ while True:
         protocol = ProtocolBuilder("button18", "on")
         ws.send(protocol.buildProtocol())
         pattern = ws.recv()
-        print(pattern)
-        micro.start_recording(pattern)
+        saveMode = True
         while GPIO.input(18) == GPIO.HIGH:
             time.sleep(0.1)
 
     # Stops audio recording
     if GPIO.input(18) == GPIO.LOW:
-        micro.stop_recording()
+        if saveMode:
+            protocol = ProtocolBuilder("button18", "off")
+            ws.send(protocol.buildProtocol())
+            saveMode = False
 
     # Delete audio file
     if GPIO.input(4) == GPIO.HIGH:
