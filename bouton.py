@@ -26,7 +26,7 @@ saveMode = False
 
 while True:
     time_now = datetime.now() - deleteTime
-    if int(time_now.total_seconds()) < 5:
+    if int(time_now.total_seconds()) > 5:
         DelMode = False
     # Takes photo
     if GPIO.input(17) == GPIO.HIGH:
@@ -53,6 +53,7 @@ while True:
 
     # Delete audio file
     if GPIO.input(4) == GPIO.HIGH:
+        print(DelMode)
         if DelMode:
             print("pushed")
             protocol = ProtocolBuilder("button4", "HIGH")
