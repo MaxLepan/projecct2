@@ -53,7 +53,7 @@ class AudioStoring:
         with open("./audio/audioStorage.json", "w") as file:
             json.dump(self.list_obj, file, indent=4, separators=(',', ': '))
 
-        os.system("play audio/systemAudio/messageDeleted.ogg")
+        #os.system("play audio/systemAudio/messageDeleted.ogg")
         print("Deleted")
         
         

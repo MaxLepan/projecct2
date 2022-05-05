@@ -10,10 +10,12 @@ class ButtonDelete:
         print("del accompagner")
     
     def mode_2(self):
-        self.audio.play_audio("./audio/systemAudio/start-mode-2")
+        print("prrrrrt")
+        self.audio.play_audio("audio/systemAudio/start-mode-2.ogg", ButtonDelete.volume)
     
     def mode_3(self):
-        self.audio.play_audio("./audio/systemAudio/start-mode-3")
+        print("un message différent")
+        self.audio.play_audio("audio/systemAudio/start-mode-3.ogg", ButtonDelete.volume)
 
     def action(self, mode):
         file = open("./database/sound-volume.txt", "r")

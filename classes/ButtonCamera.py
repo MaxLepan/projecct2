@@ -65,3 +65,8 @@ class ButtonCamera:
         ButtonCamera.volume = int(file.readline())
         if mode == 1:
             self.mode_1()
+        elif mode == 2:
+            self.mode_2()
+        elif mode == 3:
+            self.mode_3()
+            

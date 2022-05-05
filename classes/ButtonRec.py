@@ -18,26 +18,26 @@ class ButtonRec:
         ButtonRec.micro.stop_recording()
 
     def mode_2_rec(self, pattern):
-        self.audio.play_audio("./audio/systemAudio/start-mode-2")
+        self.audio.play_audio("audio/systemAudio/start-mode-2.ogg", ButtonRec.volume)
         ButtonRec.micro.start_recording(pattern)
     
     def mode_2_stop_rec(self):
         ButtonRec.micro.stop_recording()
-        self.audio.play_audio("./audio/systemAudio/start-mode-2")
+        self.audio.play_audio("audio/systemAudio/start-mode-2.ogg", ButtonRec.volume)
 
     def mode_3_rec(self, pattern):
-        self.audio.play_audio("./audio/systemAudio/start-mode-3")
+        self.audio.play_audio("audio/systemAudio/start-mode-3.ogg", ButtonRec.volume)
         ButtonRec.micro.start_recording(pattern)
     
     def mode_3_stop_rec(self):
         ButtonRec.micro.stop_recording()
-        self.audio.play_audio("./audio/systemAudio/start-mode-3")
+        self.audio.play_audio("audio/systemAudio/start-mode-3.ogg", ButtonRec.volume)
 
     def mode_2_audio(self):
-        self.audio.play_audio("./audio/systemAudio/start-mode-2")
+        self.audio.play_audio("audio/systemAudio/start-mode-2.ogg", ButtonRec.volume)
     
     def mode_3_audio(self):
-        self.audio.play_audio("./audio/systemAudio/start-mode-3")
+        self.audio.play_audio("audio/systemAudio/start-mode-3.ogg", ButtonRec.volume)
 
     def action(self, mode):
         file = open("./database/sound-volume.txt", "r")

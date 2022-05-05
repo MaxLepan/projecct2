@@ -4,12 +4,12 @@ import os
 from datetime import datetime
 
 
-class VolumeControl:
+class ModeControl:
     clk = 16
     dt = 12
     counter = 50
     isSave = True
-    saveFilePath = "./database/mode.txt"
+    saveFilePath = "../database/mode.txt"
 
     def __init__(self, name: str) -> None:
         self.name = name
@@ -42,6 +42,7 @@ class VolumeControl:
             else:
                 if self.counter > 1:
                     self.counter -= 1
+            print(self.counter)
             self.setSave()
 
         self.save()
@@ -64,6 +65,9 @@ class VolumeControl:
             file = open(self.saveFilePath, "w")
             file.write(f"{self.counter}")
             self.isSave = True
-            volumeFile = open("./database/sound-volume.txt", "r")
+            volumeFile = open("../database/sound-volume.txt", "r")
             volume = int(volumeFile.readline())
-            os.system(f"play -v {volume/100} audio/systemAudio/start-mode-{self.counter}.ogg")
+            os.system(f"play -v {volume/100} ../audio/systemAudio/start-mode-{self.counter}.ogg")
+            
+mode = ModeControl("mode")
+mode.start()
