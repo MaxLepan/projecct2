@@ -5,8 +5,8 @@ from datetime import datetime
 
 
 class VolumeControl:
-    clk = 17
-    dt = 18
+    clk = 24
+    dt = 23
     counter = 50
     isSave = True
     saveFilePath = "./database/sound-volume.txt"
@@ -37,11 +37,12 @@ class VolumeControl:
         dtState = GPIO.input(self.dt)
         if clkState != self.clkLastState:
             if dtState != clkState:
-                if self.counter < 100:
+                if self.counter < 150:
                     self.counter += 1
             else:
                 if self.counter > 0:
                     self.counter -= 1
+            print(self.counter)
             self.setSave()
 
         self.save()
@@ -64,8 +65,8 @@ class VolumeControl:
             file = open(self.saveFilePath, "w")
             file.write(f"{self.counter}")
             self.isSave = True
-            os.system(f"play -v {self.counter} audio/systemAudio/soundChanged.ogg")
+            os.system(f"play -v {self.counter/100} ./audio/systemAudio/soundChanged.ogg")
 
 #Uncomment to run tests
-# vs = VolumeControl("Volume")
-# vs.start()
+vs = VolumeControl("Volume")
+vs.start()
