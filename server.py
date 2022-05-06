@@ -13,7 +13,7 @@ class Stockage:
 
     def __init__(self):
         self.pattern = 0
-        self.mode = 1,
+        self.mode = 1
         self.volume = 100
 
 
@@ -31,17 +31,23 @@ class SimpleEcho(WebSocket):
         protocol.decodeProtocol()
         sensor = protocol.sensor
         value = protocol.value
-        modeFile = open("./database/mode.txt", "r")
-        if isinstance(modeFile.readline(), str):
-            if modeFile.readline() != "":
-                SimpleEcho.stockage.mode = int(modeFile.readline())
+        #modeFile = open("./database/mode.txt", "r")
+        with open("./database/mode.txt", "r") as modeFile:
+            modeLine = modeFile.readline()
+            if isinstance(modeLine, str):
+                if modeLine != "":
+                    SimpleEcho.stockage.mode = int(modeLine)
         volumeFile = open("./database/sound-volume.txt", "r")
-        if isinstance(volumeFile.readline(), str):
-            if volumeFile.readline() != "":
-                SimpleEcho.stockage.volume = int(volumeFile.readline())
+        volumeLine = volumeFile.readline()
+        if isinstance(volumeLine, str):
+            volumeFile.seek(0)
+            if volumeLine != "":
+                volumeFile.seek(0)
+                SimpleEcho.stockage.volume = int(volumeLine)
 
         # Takes photoAudio
         if sensor == "button17":
+            print(SimpleEcho.stockage.mode, "aaaaaaaaaaaaaaaaaaaaaaaaaa")
             SimpleEcho.buttonCamera.action(SimpleEcho.stockage.mode)
             SimpleEcho.stockage.pattern = ButtonCamera.pattern            
             print(SimpleEcho.stockage.pattern)

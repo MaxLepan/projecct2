@@ -46,7 +46,8 @@ class ButtonCamera:
 
     def action(self, mode):
         file = open("./database/sound-volume.txt", "r")
-        ButtonCamera.volume = int(file.readline())
+        #ButtonCamera.volume = int(file.readline())
+        print(mode)
         if mode == 1:
             self.mode_1_2()
         elif mode == 2:
