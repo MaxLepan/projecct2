@@ -36,7 +36,6 @@ class SimpleEcho(WebSocket):
         volumeFile = open("./database/sound-volume.txt", "r")
         SimpleEcho.stockage.volume = int(volumeFile.readline())
 
-        print(SimpleEcho.stockage.mode)
         # Takes photoAudio
         if sensor == "button17":
             SimpleEcho.buttonCamera.action(SimpleEcho.stockage.mode)
@@ -49,11 +48,15 @@ class SimpleEcho(WebSocket):
             
             if value == "on":
                 if (SimpleEcho.patternSaved):
+                    SimpleEcho.recMode = True
                     SimpleEcho.buttonRec.action_button_on(SimpleEcho.stockage.mode, SimpleEcho.stockage.pattern)
                 else:
-                    os.system(f"play -v {SimpleEcho.stockage.volume/100} audio/systemAudio/claque.ogg")
-            if value == "off":
-                SimpleEcho.buttonRec.action_button_off(SimpleEcho.stockage.mode)
+                    os.system(f"play -v {SimpleEcho.stockage.volume/100} audio/systemAudio/start-mode-3.ogg")
+            if value == "off" :
+                if SimpleEcho.recMode:
+                    print("ui")
+                    SimpleEcho.recMode = False
+                    SimpleEcho.buttonRec.action_button_off(SimpleEcho.stockage.mode)
 
         # Deletes audio file
         elif sensor == "button4":

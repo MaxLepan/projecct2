@@ -26,6 +26,8 @@ saveMode = False
 recTime = datetime.now()
 
 while True:
+    volumeFile = open("./database/sound-volume.txt", "r")
+    volume = int(volumeFile.readline())
     time_now = datetime.now() - deleteTime
     if int(time_now.total_seconds()) > 5:
         DelMode = False
@@ -40,9 +42,10 @@ while True:
     if GPIO.input(18) == GPIO.HIGH:
         if (saveMode):
             delta = datetime.now() - recTime
-            if int(delta.total_seconds()) > 0.5:
+            if int(delta.total_seconds()) > 0.20:
                 protocol = ProtocolBuilder("button18", "on")
                 ws.send(protocol.buildProtocol())
+                saveMode = False
                 while GPIO.input(18) == GPIO.HIGH:
                     time.sleep(0.1)
         else:
@@ -51,13 +54,13 @@ while True:
 
     # Stops audio recording
     if GPIO.input(18) == GPIO.LOW:
-        delta = datetime.now() - recTime
-        if saveMode & int(delta.total_seconds()) > 1:
-            protocol = ProtocolBuilder("button18", "off")
-            ws.send(protocol.buildProtocol())
+        if saveMode:
+            print("lezgo")
             saveMode = False
-        else:
             os.system(f"play -v {volume/100} audio/systemAudio/claque.ogg")
+
+        protocol = ProtocolBuilder("button18", "off")
+        ws.send(protocol.buildProtocol()) 
 
     # Delete audio file
     if GPIO.input(4) == GPIO.HIGH:
@@ -68,8 +71,6 @@ while True:
             time.sleep(2)
             DelMode = False
         else:
-            volumeFile = open("./database/sound-volume.txt", "r")
-            volume = int(volumeFile.readline())
             os.system(f"play -v {volume/100} audio/systemAudio/soundChanged.ogg")
             DelMode = True
             deleteTime = datetime.now()

@@ -17,8 +17,12 @@ class ButtonRec:
         ButtonRec.micro.stop_recording()
 
     def mode_2_rec(self, pattern):
-        audioGet = AudioGetter(self.tensorflow.pattern)
+        print("bnchour 3")
+        
+        audioGet = AudioGetter(pattern)
+        print("bonchour 3.5")
         audioFile = audioGet.get_audio()
+        print("bonchour 4")
         if "messageNotRecorded" in audioFile:
             ButtonRec.micro.start_recording(pattern)
         else:
