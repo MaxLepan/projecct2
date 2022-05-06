@@ -1,7 +1,9 @@
-sleep 20
+sleep 15
 
 cd /home/pi/Documents/project2
 python ./server.py &
-sleep 30
+sleep 35
 python ./bouton.py &
-play ./audio/systemAudio/wiiFit.ogg
+python ./classes/VolumeControl.py &
+python ./classes/ModeControl.py &
+play ./audio/systemAudio/soundChanged.ogg
