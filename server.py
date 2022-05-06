@@ -50,11 +50,13 @@ class SimpleEcho(WebSocket):
                 if (SimpleEcho.patternSaved):
                     SimpleEcho.recMode = True
                     SimpleEcho.buttonRec.action_button_on(SimpleEcho.stockage.mode, SimpleEcho.stockage.pattern)
+                    print(SimpleEcho.buttonRec.messageRecorded)
+                    if SimpleEcho.buttonRec.messageRecorded:
+                        SimpleEcho.recMode = False
                 else:
                     os.system(f"play -v {SimpleEcho.stockage.volume/100} audio/systemAudio/start-mode-3.ogg")
             if value == "off" :
                 if SimpleEcho.recMode:
-                    print("ui")
                     SimpleEcho.recMode = False
                     SimpleEcho.buttonRec.action_button_off(SimpleEcho.stockage.mode)
 

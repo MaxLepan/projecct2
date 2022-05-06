@@ -6,9 +6,11 @@ from .AudioGetter import AudioGetter
 class ButtonRec:
     volume = 100
     micro = Micro()
+    
 
     def __init__(self) -> None:
         self.audio = Audio()
+        self.messageRecorded = False
 
     def mode_1_rec(self, pattern):
         ButtonRec.micro.start_recording(pattern)
@@ -17,15 +19,13 @@ class ButtonRec:
         ButtonRec.micro.stop_recording()
 
     def mode_2_rec(self, pattern):
-        print("bnchour 3")
-        
         audioGet = AudioGetter(pattern)
-        print("bonchour 3.5")
         audioFile = audioGet.get_audio()
-        print("bonchour 4")
         if "messageNotRecorded" in audioFile:
+            self.messageRecorded = False
             ButtonRec.micro.start_recording(pattern)
         else:
+            self.messageRecorded = True
             os.system(f"play -v {self.volume/100} audio/systemAudio/claque.ogg")
     
     def mode_2_stop_rec(self):
