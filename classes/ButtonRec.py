@@ -13,10 +13,18 @@ class ButtonRec:
         self.messageRecorded = False
 
     def mode_1_rec(self, pattern):
-        ButtonRec.micro.start_recording(pattern)
+        audioGet = AudioGetter(pattern)
+        audioFile = audioGet.get_audio()
+        if "messageNotRecorded" in audioFile:
+            self.messageRecorded = False
+            ButtonRec.micro.start_recording(pattern)
+        else:
+            self.messageRecorded = True
+            os.system(f"play -v {self.volume/100} audio/systemAudio/claque.ogg")
     
     def mode_1_stop_rec(self):
         ButtonRec.micro.stop_recording()
+        self.audio.play_audio("audio/systemAudio/soundChanged.ogg", ButtonRec.volume)
 
     def mode_2_rec(self, pattern):
         audioGet = AudioGetter(pattern)

@@ -32,9 +32,13 @@ class SimpleEcho(WebSocket):
         sensor = protocol.sensor
         value = protocol.value
         modeFile = open("./database/mode.txt", "r")
-        SimpleEcho.stockage.mode = int(modeFile.readline())
+        if isinstance(modeFile.readline(), str):
+            if modeFile.readline() != "":
+                SimpleEcho.stockage.mode = int(modeFile.readline())
         volumeFile = open("./database/sound-volume.txt", "r")
-        SimpleEcho.stockage.volume = int(volumeFile.readline())
+        if isinstance(volumeFile.readline(), str):
+            if volumeFile.readline() != "":
+                SimpleEcho.stockage.volume = int(volumeFile.readline())
 
         # Takes photoAudio
         if sensor == "button17":

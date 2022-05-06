@@ -27,7 +27,9 @@ recTime = datetime.now()
 
 while True:
     volumeFile = open("./database/sound-volume.txt", "r")
-    volume = int(volumeFile.readline())
+    if isinstance(volumeFile.readline(), str):
+            if volumeFile.readline() != "":
+                SimpleEcho.stockage.volume = int(volumeFile.readline())
     time_now = datetime.now() - deleteTime
     if int(time_now.total_seconds()) > 5:
         DelMode = False
