@@ -50,7 +50,7 @@ class AudioStoring:
                     os.system(f"play -v {self.volume/100} audio/systemAudio/messageDeleted.ogg")
                     break
                 else:
-                    os.system(f"play -v {self.volume/100} audio/systemAudio/calque.ogg")
+                    os.system(f"play -v {self.volume/100} audio/systemAudio/claque.ogg")
           
         with open("./audio/audioStorage.json", "w") as file:
             json.dump(self.list_obj, file, indent=4, separators=(',', ': '))

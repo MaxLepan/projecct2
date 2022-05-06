@@ -1,4 +1,6 @@
+from datetime import datetime
 import os
+from time import time
 from simple_websocket_server import WebSocketServer, WebSocket
 from classes.ProtocolReader import ProtocolReader
 from classes.AudioStoring import AudioStoring
@@ -22,6 +24,7 @@ class SimpleEcho(WebSocket):
     buttonDelete = ButtonDelete()
     buttonCamera = ButtonCamera("./img/photo_analyse.png")
     patternSaved = False
+    recMode = False 
     
     def handle(self):
         protocol = ProtocolReader(self.data)
@@ -32,6 +35,7 @@ class SimpleEcho(WebSocket):
         SimpleEcho.stockage.mode = int(modeFile.readline())
         volumeFile = open("./database/sound-volume.txt", "r")
         SimpleEcho.stockage.volume = int(volumeFile.readline())
+
         print(SimpleEcho.stockage.mode)
         # Takes photoAudio
         if sensor == "button17":
@@ -42,14 +46,12 @@ class SimpleEcho(WebSocket):
 
         # Send pattern to save message
         elif sensor == "button18":
+            
             if value == "on":
-                print(SimpleEcho.stockage.pattern)
                 if (SimpleEcho.patternSaved):
-                    SimpleEcho.buttonRec.action(SimpleEcho.stockage.mode)
                     SimpleEcho.buttonRec.action_button_on(SimpleEcho.stockage.mode, SimpleEcho.stockage.pattern)
                 else:
                     os.system(f"play -v {SimpleEcho.stockage.volume/100} audio/systemAudio/claque.ogg")
-                    self.send_message("No")
             if value == "off":
                 SimpleEcho.buttonRec.action_button_off(SimpleEcho.stockage.mode)
 

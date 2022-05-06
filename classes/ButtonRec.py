@@ -10,9 +10,6 @@ class ButtonRec:
     def __init__(self) -> None:
         self.audio = Audio()
 
-    def mode_1_audio(self):
-        print("rec accompagner")
-
     def mode_1_rec(self, pattern):
         ButtonRec.micro.start_recording(pattern)
     
@@ -40,22 +37,6 @@ class ButtonRec:
     def mode_3_stop_rec(self):
         ButtonRec.micro.stop_recording()
         self.audio.play_audio("audio/systemAudio/start-mode-3.ogg", ButtonRec.volume)
-
-    def mode_2_audio(self):
-        return 
-    
-    def mode_3_audio(self):
-        self.audio.play_audio("audio/systemAudio/start-mode-3.ogg", ButtonRec.volume)
-
-    def action(self, mode):
-        file = open("./database/sound-volume.txt", "r")
-        ButtonRec.volume = int(file.readline())
-        if mode == 1:
-            self.mode_1_audio()
-        elif mode == 2:
-            self.mode_2_audio()
-        elif mode == 3:
-            self.mode_3_audio()
 
     def action_button_on(self, mode, pattern):
         if mode == 1:

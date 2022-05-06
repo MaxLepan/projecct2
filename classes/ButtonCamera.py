@@ -14,7 +14,7 @@ class ButtonCamera:
         self.tensorflow = TensorFlow()
         self.audio = Audio()
 
-    def mode_1(self):
+    def mode_1_2(self):
         led = subprocess.Popen(["python", "./led.py"])
         self.camera.take_photo()
         time.sleep(2)
@@ -24,25 +24,6 @@ class ButtonCamera:
 
         audioGet = AudioGetter(self.tensorflow.pattern)
         audioFile = audioGet.get_audio()
-        self.audio.play_audio(audioFile, ButtonCamera.volume)
-        led.terminate()
-        ButtonCamera.pattern = self.tensorflow.pattern
-
-    def mode_2(self):
-        self.audio.play_audio('./audio/systemAudio/messageNotRecorded.ogg', ButtonCamera.volume)
-
-        led = subprocess.Popen(["python", "./led.py"])
-        self.camera.take_photo()
-        time.sleep(2)
-        print("photo")
-        self.tensorflow.get_pattern()
-        print(self.tensorflow.pattern)
-
-        audioGet = AudioGetter(self.tensorflow.pattern)
-        audioFile = audioGet.get_audio()
-        if "messageNotRecorded" in audioFile:
-            self.audio.play_audio("./audio/systemAudio/claque.ogg", ButtonCamera.volume)
-        
         self.audio.play_audio(audioFile, ButtonCamera.volume)
         led.terminate()
         ButtonCamera.pattern = self.tensorflow.pattern
@@ -67,9 +48,9 @@ class ButtonCamera:
         file = open("./database/sound-volume.txt", "r")
         ButtonCamera.volume = int(file.readline())
         if mode == 1:
-            self.mode_1()
+            self.mode_1_2()
         elif mode == 2:
-            self.mode_2()
+            self.mode_1_2()
         elif mode == 3:
             self.mode_3()
             

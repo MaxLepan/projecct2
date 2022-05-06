@@ -23,6 +23,7 @@ buttonRec = ButtonRec()
 DelMode = False
 deleteTime = datetime.now()
 saveMode = False
+recTime = datetime.now()
 
 while True:
     time_now = datetime.now() - deleteTime
@@ -37,23 +38,29 @@ while True:
 
     # Start audio recording
     if GPIO.input(18) == GPIO.HIGH:
-        protocol = ProtocolBuilder("button18", "on")
-        ws.send(protocol.buildProtocol())
-        pattern = ws.recv()
-        saveMode = True
-        while GPIO.input(18) == GPIO.HIGH:
-            time.sleep(0.1)
+        if (saveMode):
+            delta = datetime.now() - recTime
+            if int(delta.total_seconds()) > 0.5:
+                protocol = ProtocolBuilder("button18", "on")
+                ws.send(protocol.buildProtocol())
+                while GPIO.input(18) == GPIO.HIGH:
+                    time.sleep(0.1)
+        else:
+            saveMode = True
+            recTime = datetime.now()
 
     # Stops audio recording
     if GPIO.input(18) == GPIO.LOW:
-        if saveMode:
+        delta = datetime.now() - recTime
+        if saveMode & int(delta.total_seconds()) > 1:
             protocol = ProtocolBuilder("button18", "off")
             ws.send(protocol.buildProtocol())
             saveMode = False
+        else:
+            os.system(f"play -v {volume/100} audio/systemAudio/claque.ogg")
 
     # Delete audio file
     if GPIO.input(4) == GPIO.HIGH:
-        print(DelMode)
         if DelMode:
             print("pushed")
             protocol = ProtocolBuilder("button4", "HIGH")
