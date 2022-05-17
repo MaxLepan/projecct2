@@ -4,3 +4,6 @@
 3 y+r
 4 b
 5 fond
+6 vert
+7 vio
+8 orang
