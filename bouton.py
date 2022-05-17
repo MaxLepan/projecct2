@@ -32,7 +32,7 @@ while True:
     if isinstance(volumeLine, str):
             if volumeLine != "":
                 volumeFile.seek(0)
-                SimpleEcho.stockage.volume = int(volumeLine)
+                volume = int(volumeLine)
     time_now = datetime.now() - deleteTime
     if int(time_now.total_seconds()) > 5:
         DelMode = False
@@ -76,7 +76,8 @@ while True:
             time.sleep(2)
             DelMode = False
         else:
-            os.system(f"play -v {volume/100} audio/systemAudio/soundChanged.ogg")
+            protocol = ProtocolBuilder("button4", "1")
+            ws.send(protocol.buildProtocol())
             DelMode = True
             deleteTime = datetime.now()
     

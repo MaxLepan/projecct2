@@ -74,6 +74,8 @@ class SimpleEcho(WebSocket):
         elif sensor == "button4":
             if (SimpleEcho.patternSaved):
                 SimpleEcho.buttonDelete.action(SimpleEcho.stockage.mode, SimpleEcho.stockage.pattern)
+            elif value == "1":
+                os.system(f"play -v {SimpleEcho.stockage.volume/100} audio/systemAudio/soundChanged.ogg")
             else:
                 os.system(f"play -v {SimpleEcho.stockage.volume/100} audio/systemAudio/claque.ogg")
             print("button4")
