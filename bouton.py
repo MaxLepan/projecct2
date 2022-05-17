@@ -80,4 +80,5 @@ while True:
             ws.send(protocol.buildProtocol())
             DelMode = True
             deleteTime = datetime.now()
+            time.sleep(0.2)
     

@@ -4,6 +4,7 @@ from time import time
 from simple_websocket_server import WebSocketServer, WebSocket
 from classes.ProtocolReader import ProtocolReader
 from classes.AudioStoring import AudioStoring
+from classes.AudioGetter import AudioGetter
 from classes.ButtonRec import ButtonRec
 from classes.ButtonDelete import ButtonDelete
 from classes.ButtonCamera import ButtonCamera
@@ -50,7 +51,7 @@ class SimpleEcho(WebSocket):
             print(SimpleEcho.stockage.mode, "aaaaaaaaaaaaaaaaaaaaaaaaaa")
             SimpleEcho.buttonCamera.action(SimpleEcho.stockage.mode)
             SimpleEcho.stockage.pattern = ButtonCamera.pattern            
-            print(SimpleEcho.stockage.pattern)
+            print(SimpleEcho.stockage.pattern, "PATTERN")
             SimpleEcho.patternSaved = True
 
         # Send pattern to save message
@@ -72,11 +73,18 @@ class SimpleEcho(WebSocket):
 
         # Deletes audio file
         elif sensor == "button4":
-            if (SimpleEcho.patternSaved):
+            if value == "1" and SimpleEcho.patternSaved:
+                print("in 1")
+                audioGet = AudioGetter(SimpleEcho.stockage.pattern)
+                audioFile = audioGet.get_audio()
+                if "messageNotRecorded" in audioFile:
+                    os.system(f"play -v {SimpleEcho.stockage.volume/100} audio/systemAudio/claque.ogg")
+                else:
+                    os.system(f"play -v {SimpleEcho.stockage.volume/100} audio/systemAudio/soundChanged.ogg")
+            elif (SimpleEcho.patternSaved):
                 SimpleEcho.buttonDelete.action(SimpleEcho.stockage.mode, SimpleEcho.stockage.pattern)
-            elif value == "1":
-                os.system(f"play -v {SimpleEcho.stockage.volume/100} audio/systemAudio/soundChanged.ogg")
             else:
+                print("no mess")
                 os.system(f"play -v {SimpleEcho.stockage.volume/100} audio/systemAudio/claque.ogg")
             print("button4")
         
