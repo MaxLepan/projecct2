@@ -43,7 +43,7 @@ while True:
         ws.send(protocol.buildProtocol())
         time.sleep(2)
 
-# Start audio recording
+    # Start audio recording
     if GPIO.input(18) == GPIO.HIGH:
         if (saveMode):
             delta = datetime.now() - recTime
@@ -62,7 +62,7 @@ while True:
         if saveMode:
             print("lezgo")
             saveMode = False
-            os.system(f"play -v {volume/100} audio/systemAudio/claque.ogg")
+            os.system(f"play -v {volume/100} audio/systemAudio/keepPushingToRecord.ogg")
 
         protocol = ProtocolBuilder("button18", "off")
         ws.send(protocol.buildProtocol()) 

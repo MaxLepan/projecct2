@@ -12,7 +12,7 @@ class AudioGetter:
             if item.get(self.uid):
                 return item[self.uid]
         # Plays messageNotRecorded.ogg if there is no registered message for that pattern
-        return "audio/systemAudio/messageNotRecorded.ogg"
+        return "audio/systemAudio/noMessageRecorded.ogg"
 
 
 #audioGetter = AudioGetter(0)

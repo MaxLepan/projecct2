@@ -1,9 +1,9 @@
-sleep 15
+sleep 25
 
 cd /home/pi/Documents/project2
+play ./audio/systemAudio/soundChanged.ogg
 python ./server.py &
-sleep 35
+sleep 40
 python ./bouton.py &
 python ./classes/VolumeControl.py &
-python ./classes/ModeControl.py &
 play ./audio/systemAudio/soundChanged.ogg

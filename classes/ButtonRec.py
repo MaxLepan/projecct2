@@ -15,8 +15,9 @@ class ButtonRec:
     def mode_1_rec(self, pattern):
         audioGet = AudioGetter(pattern)
         audioFile = audioGet.get_audio()
-        if "messageNotRecorded" in audioFile:
+        if "noMessageRecorded" in audioFile:
             self.messageRecorded = False
+            self.audio.play_audio("audio/systemAudio/soundChanged.ogg", ButtonRec.volume)
             ButtonRec.micro.start_recording(pattern)
         else:
             self.messageRecorded = True
@@ -29,7 +30,7 @@ class ButtonRec:
     def mode_2_rec(self, pattern):
         audioGet = AudioGetter(pattern)
         audioFile = audioGet.get_audio()
-        if "messageNotRecorded" in audioFile:
+        if "noMessageRecorded" in audioFile:
             self.messageRecorded = False
             ButtonRec.micro.start_recording(pattern)
         else:

@@ -77,10 +77,10 @@ class SimpleEcho(WebSocket):
                 print("in 1")
                 audioGet = AudioGetter(SimpleEcho.stockage.pattern)
                 audioFile = audioGet.get_audio()
-                if "messageNotRecorded" in audioFile:
-                    os.system(f"play -v {SimpleEcho.stockage.volume/100} audio/systemAudio/claque.ogg")
+                if "noMessageRecorded" in audioFile:
+                    os.system(f"play -v {SimpleEcho.stockage.volume/100} audio/systemAudio/nothingToDelete.ogg")
                 else:
-                    os.system(f"play -v {SimpleEcho.stockage.volume/100} audio/systemAudio/soundChanged.ogg")
+                    os.system(f"play -v {SimpleEcho.stockage.volume/100} audio/systemAudio/deleteConfirmationExpert.ogg")
             elif (SimpleEcho.patternSaved):
                 SimpleEcho.buttonDelete.action(SimpleEcho.stockage.mode, SimpleEcho.stockage.pattern)
             else:
