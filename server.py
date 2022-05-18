@@ -65,7 +65,7 @@ class SimpleEcho(WebSocket):
                     if SimpleEcho.buttonRec.messageRecorded:
                         SimpleEcho.recMode = False
                 else:
-                    os.system(f"play -v {SimpleEcho.stockage.volume/100} audio/systemAudio/start-mode-3.ogg")
+                    os.system(f"play -v {SimpleEcho.stockage.volume/100} audio/systemAudio/start-mode-expert.ogg")
             if value == "off" :
                 if SimpleEcho.recMode:
                     SimpleEcho.recMode = False
