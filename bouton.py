@@ -43,7 +43,7 @@ while True:
         ws.send(protocol.buildProtocol())
         time.sleep(2)
 
-    # Start audio recording
+# Start audio recording
     if GPIO.input(18) == GPIO.HIGH:
         if (saveMode):
             delta = datetime.now() - recTime
