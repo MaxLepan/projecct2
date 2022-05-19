@@ -73,6 +73,8 @@ class SimpleEcho(WebSocket):
                     if SimpleEcho.recMode:
                         SimpleEcho.recMode = False
                         SimpleEcho.buttonRec.action_button_off(SimpleEcho.stockage.mode)
+                if value == "shortClick":
+                    os.system(f"play -v {SimpleEcho.stockage.volume/100} audio/systemAudio/keepPushingToRecord.ogg")
 
             # Deletes audio file
             elif sensor == "button4":
