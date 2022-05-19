@@ -10,8 +10,8 @@ for i in pins:
 	GPIO.setup(pins[i], GPIO.OUT)   # Set pins' mode is output
 	GPIO.output(pins[i], GPIO.HIGH) # Set pins to high(+3.3V) to off led
 
-p_R = GPIO.PWM(pins['pin_R'], 2000)  # set Frequece to 2KHz
-p_G = GPIO.PWM(pins['pin_G'], 2000)
+p_R = GPIO.PWM(pins['pin_R'], 5000)  # set Frequece to 2KHz
+p_G = GPIO.PWM(pins['pin_G'], 5000)
 p_B = GPIO.PWM(pins['pin_B'], 5000)
 
 p_R.start(0)      # Initial duty Cycle = 0(leds off)
@@ -46,7 +46,7 @@ signal.signal(signal.SIGTERM, end_process)
 
 try:
 	while True:
-		setColor(0xAA5511)
+		setColor(0x885511)
 except :
 	p_R.stop()
 	p_G.stop()
