@@ -1,4 +1,0 @@
-0 triangle_bleu
-1 cercle_jaune
-2 formes_orange
-3 fond

@@ -8,6 +8,7 @@ from classes.AudioGetter import AudioGetter
 from classes.ButtonRec import ButtonRec
 from classes.ButtonDelete import ButtonDelete
 from classes.ButtonCamera import ButtonCamera
+from classes.Tutorial import Tutorial
 
 
 class Stockage:
@@ -26,6 +27,7 @@ class SimpleEcho(WebSocket):
     buttonCamera = ButtonCamera("./img/photo_analyse.png")
     patternSaved = False
     recMode = False 
+    tutoMode = Tutorial()
     
     def handle(self):
         protocol = ProtocolReader(self.data)
@@ -46,48 +48,54 @@ class SimpleEcho(WebSocket):
                 volumeFile.seek(0)
                 SimpleEcho.stockage.volume = int(volumeLine)
 
-        # Takes photoAudio
-        if sensor == "button17":
-            print(SimpleEcho.stockage.mode, "aaaaaaaaaaaaaaaaaaaaaaaaaa")
-            SimpleEcho.buttonCamera.action(SimpleEcho.stockage.mode)
-            SimpleEcho.stockage.pattern = ButtonCamera.pattern            
-            print(SimpleEcho.stockage.pattern, "PATTERN")
-            SimpleEcho.patternSaved = True
+        if SimpleEcho.stockage.mode != 3:
+            # Takes photoAudio
+            if sensor == "button17":
+                print(SimpleEcho.stockage.mode, "aaaaaaaaaaaaaaaaaaaaaaaaaa")
+                SimpleEcho.buttonCamera.action(SimpleEcho.stockage.mode)
+                SimpleEcho.stockage.pattern = ButtonCamera.pattern            
+                print(SimpleEcho.stockage.pattern, "PATTERN")
+                SimpleEcho.patternSaved = True
 
-        # Send pattern to save message
-        elif sensor == "button18":
-            
-            if value == "on":
-                if (SimpleEcho.patternSaved):
-                    SimpleEcho.recMode = True
-                    SimpleEcho.buttonRec.action_button_on(SimpleEcho.stockage.mode, SimpleEcho.stockage.pattern)
-                    print(SimpleEcho.buttonRec.messageRecorded)
-                    if SimpleEcho.buttonRec.messageRecorded:
+            # Send pattern to save message
+            elif sensor == "button18":
+                
+                if value == "on":
+                    if (SimpleEcho.patternSaved):
+                        SimpleEcho.recMode = True
+                        SimpleEcho.buttonRec.action_button_on(SimpleEcho.stockage.mode, SimpleEcho.stockage.pattern)
+                        print(SimpleEcho.buttonRec.messageRecorded)
+                        if SimpleEcho.buttonRec.messageRecorded:
+                            SimpleEcho.recMode = False
+                    else:
+                        os.system(f"play -v {SimpleEcho.stockage.volume/100} audio/systemAudio/start-mode-expert.ogg")
+                if value == "off" :
+                    if SimpleEcho.recMode:
                         SimpleEcho.recMode = False
-                else:
-                    os.system(f"play -v {SimpleEcho.stockage.volume/100} audio/systemAudio/start-mode-expert.ogg")
-            if value == "off" :
-                if SimpleEcho.recMode:
-                    SimpleEcho.recMode = False
-                    SimpleEcho.buttonRec.action_button_off(SimpleEcho.stockage.mode)
+                        SimpleEcho.buttonRec.action_button_off(SimpleEcho.stockage.mode)
 
-        # Deletes audio file
-        elif sensor == "button4":
-            if value == "1" and SimpleEcho.patternSaved:
-                print("in 1")
-                audioGet = AudioGetter(SimpleEcho.stockage.pattern)
-                audioFile = audioGet.get_audio()
-                if "noMessageRecorded" in audioFile:
-                    os.system(f"play -v {SimpleEcho.stockage.volume/100} audio/systemAudio/nothingToDelete.ogg")
+            # Deletes audio file
+            elif sensor == "button4":
+                if value == "1" and SimpleEcho.patternSaved:
+                    print("in 1")
+                    audioGet = AudioGetter(SimpleEcho.stockage.pattern)
+                    audioFile = audioGet.get_audio()
+                    if "noMessageRecorded" in audioFile:
+                        os.system(f"play -v {SimpleEcho.stockage.volume/100} audio/systemAudio/nothingToDelete.ogg")
+                    else:
+                        os.system(f"play -v {SimpleEcho.stockage.volume/100} audio/systemAudio/deleteConfirmationExpert.ogg")
+                elif (SimpleEcho.patternSaved):
+                    SimpleEcho.buttonDelete.action(SimpleEcho.stockage.mode, SimpleEcho.stockage.pattern)
                 else:
-                    os.system(f"play -v {SimpleEcho.stockage.volume/100} audio/systemAudio/deleteConfirmationExpert.ogg")
-            elif (SimpleEcho.patternSaved):
-                SimpleEcho.buttonDelete.action(SimpleEcho.stockage.mode, SimpleEcho.stockage.pattern)
-            else:
-                print("no mess")
-                os.system(f"play -v {SimpleEcho.stockage.volume/100} audio/systemAudio/claque.ogg")
-            print("button4")
-        
+                    print("no mess")
+                    os.system(f"play -v {SimpleEcho.stockage.volume/100} audio/systemAudio/claque.ogg")
+                print("button4")
+        else:
+            if sensor == "button18" and value == "on":
+                SimpleEcho.tutoMode.action(sensor)
+            elif sensor != "button18":
+                SimpleEcho.tutoMode.action(sensor)
+
     def connected(self):
         print(self.address, 'connected')
         #SimpleEcho.volumeControl.start()
