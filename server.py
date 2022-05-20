@@ -59,12 +59,9 @@ class SimpleEcho(WebSocket):
             audioFile = audioGetter.get_audio()
             SimpleEcho.audio.play_audio(audioFile, SimpleEcho.stockage.volume)
             SimpleEcho.patternSaved = True
-            print("whyyyyyyyyyyyyyyyyyyyyyy")
 
 
         elif SimpleEcho.stockage.mode == 1:
-            if sensor == "button18" and value == "on":
-                print("aspirateur")
             SimpleEcho.expertMode.action(self.data, SimpleEcho.patternSaved, SimpleEcho.stockage.pattern)
             if sensor == "button17":
                 for client in clients:
@@ -129,6 +126,7 @@ class SimpleEcho(WebSocket):
         
     def handle_close(self):
         print(self.address, 'closed')
+        clients.remove(self)
         
         
 server = WebSocketServer('', 8080, SimpleEcho)
