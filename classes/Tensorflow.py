@@ -45,10 +45,9 @@ def on_message(ws, message):
     print(message)
     if message == "Tensorflow ready":
         tensorflow.get_pattern()
+        print(tensorflow.pattern)
         protocol = ProtocolBuilder("Tensorflow", tensorflow.pattern)
         ws.send(protocol.buildProtocol())
-
-    ws.send("Tensorflow:3")
 
 def on_error(ws, error):
     print(error)

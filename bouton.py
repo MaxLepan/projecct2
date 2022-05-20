@@ -34,7 +34,7 @@ while True:
                 volumeFile.seek(0)
                 volume = int(volumeLine)
     time_now = datetime.now() - deleteTime
-    if int(time_now.total_seconds()) > 5:
+    if int(time_now.total_seconds()) > 7:
         DelMode = False
     # Takes photo
     if GPIO.input(17) == GPIO.HIGH:
