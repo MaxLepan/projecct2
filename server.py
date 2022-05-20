@@ -1,15 +1,17 @@
 from datetime import datetime
 import os
-from time import time
+import time
 from simple_websocket_server import WebSocketServer, WebSocket
 from classes.ProtocolReader import ProtocolReader
 from classes.AudioStoring import AudioStoring
 from classes.AudioGetter import AudioGetter
-from classes.ButtonRec import ButtonRec
+from classes.Audio import Audio
+#from classes.ButtonRec import ButtonRec
 from classes.ButtonDelete import ButtonDelete
-from classes.ButtonCamera import ButtonCamera
+#from classes.ButtonCamera import ButtonCamera
 from classes.Tutorial import Tutorial
-
+from classes.ExpertMode import ExpertMode
+clients = []
 
 class Stockage:
 
@@ -22,12 +24,14 @@ class Stockage:
 class SimpleEcho(WebSocket):
 
     stockage = Stockage()
-    buttonRec = ButtonRec()
+    #buttonRec = ButtonRec()
     buttonDelete = ButtonDelete()
-    buttonCamera = ButtonCamera("./img/photo_analyse.png")
+    #buttonCamera = ButtonCamera("./img/photo_analyse.png")
     patternSaved = False
     recMode = False 
     tutoMode = Tutorial()
+    expertMode = ExpertMode("./img/photo_analyse.png")
+    audio = Audio()
     
     def handle(self):
         protocol = ProtocolReader(self.data)
@@ -47,13 +51,37 @@ class SimpleEcho(WebSocket):
             if volumeLine != "":
                 volumeFile.seek(0)
                 SimpleEcho.stockage.volume = int(volumeLine)
+        
+        if sensor == "Tensorflow":
+            SimpleEcho.stockage.pattern = value
+            print(SimpleEcho.stockage.pattern)
+            audioGetter = AudioGetter(value)
+            audioFile = audioGetter.get_audio()
+            SimpleEcho.audio.play_audio(audioFile, SimpleEcho.stockage.volume)
+            SimpleEcho.patternSaved = True
 
-        if SimpleEcho.stockage.mode != 3:
+
+        elif SimpleEcho.stockage.mode == 1:
+            SimpleEcho.expertMode.action(self.data, SimpleEcho.patternSaved, SimpleEcho.stockage.pattern)
+            if sensor == "button17":
+                for client in clients:
+                    if client != self:    
+                        client.send_message("Tensorflow ready")
+        
+        else:
+            if sensor == "button18" and value == "on":
+                SimpleEcho.tutoMode.action(sensor)
+            elif sensor != "button18":
+                SimpleEcho.tutoMode.action(sensor)
+
+        """elif SimpleEcho.stockage.mode != 3:
             # Takes photoAudio
             if sensor == "button17":
                 print(SimpleEcho.stockage.mode, "aaaaaaaaaaaaaaaaaaaaaaaaaa")
-                SimpleEcho.buttonCamera.action(SimpleEcho.stockage.mode)
-                SimpleEcho.stockage.pattern = ButtonCamera.pattern            
+                #SimpleEcho.buttonCamera.action(SimpleEcho.stockage.mode)
+                #SimpleEcho.stockage.pattern = ButtonCamera.pattern
+                self.send_message('boo')
+                SimpleEcho.stockage.pattern = 3
                 print(SimpleEcho.stockage.pattern, "PATTERN")
                 SimpleEcho.patternSaved = True
 
@@ -89,19 +117,16 @@ class SimpleEcho(WebSocket):
                 else:
                     print("no mess")
                     os.system(f"play -v {SimpleEcho.stockage.volume/100} audio/systemAudio/claque.ogg")
-                print("button4")
-        else:
-            if sensor == "button18" and value == "on":
-                SimpleEcho.tutoMode.action(sensor)
-            elif sensor != "button18":
-                SimpleEcho.tutoMode.action(sensor)
+                print("button4")"""
+        
 
     def connected(self):
         print(self.address, 'connected')
-        #SimpleEcho.volumeControl.start()
+        clients.append(self)
         
     def handle_close(self):
         print(self.address, 'closed')
+        clients.remove(self)
         
         
 server = WebSocketServer('', 8080, SimpleEcho)
