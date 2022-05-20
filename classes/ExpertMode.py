@@ -44,7 +44,6 @@ class ExpertMode:
 
     def recButtonSend(self, value, pattern):
         if value == "on":
-            print("ui")
             audioGet = AudioGetter(pattern)
             audioFile = audioGet.get_audio()
             if "noMessageRecorded" in audioFile:
@@ -56,31 +55,25 @@ class ExpertMode:
                 self.getVolume()
                 self.audio.play_audio("audio/systemAudio/claque.ogg", self.volume)
         elif value == "off" and self.recording:
-            print("nope")
             self.micro.stop_recording()
             self.recording = False
             self.getVolume()
             self.audio.play_audio("audio/systemAudio/soundChanged.ogg", self.volume)
 
     def delButtonSend(self, value, pattern):
-        print("boo del")
         audioGet = AudioGetter(pattern)
         audioFile = audioGet.get_audio()
-        print("juste après ca")
         if "noMessageRecorded" in audioFile:
             self.getVolume()
             self.audio.play_audio("audio/systemAudio/claque.ogg", self.volume)
         else:
-            print("gniééé")
             if value == "HIGH":
                 audioDelete = AudioStoring("", pattern)
-                print("par là")
                 audioDelete.deleteAudio()
             elif value == "1":
                 self.audio.play_audio("audio/systemAudio/deleteConfirmationExpert.ogg", self.volume)
 
     def cameraButtonSend(self):
-        print("ici")
         led = subprocess.Popen(["python", "./led.py"])
         self.camera.take_photo()
         time.sleep(2)
