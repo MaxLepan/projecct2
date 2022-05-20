@@ -41,7 +41,7 @@ while True:
         print("pushed")
         protocol = ProtocolBuilder("button17", "HIGH")
         ws.send(protocol.buildProtocol())
-        time.sleep(2)
+        time.sleep(1)
 
     # Start audio recording
     if GPIO.input(18) == GPIO.HIGH:
@@ -63,9 +63,10 @@ while True:
             print("lezgo")
             saveMode = False
             os.system(f"play -v {volume/100} audio/systemAudio/keepPushingToRecord.ogg")
-
-        protocol = ProtocolBuilder("button18", "off")
-        ws.send(protocol.buildProtocol()) 
+        else:
+            protocol = ProtocolBuilder("button18", "off")
+            ws.send(protocol.buildProtocol()) 
+        time.sleep(0.2)
 
     # Delete audio file
     if GPIO.input(4) == GPIO.HIGH:
@@ -81,4 +82,5 @@ while True:
             DelMode = True
             deleteTime = datetime.now()
             time.sleep(0.2)
+    time.sleep(0.2)
     
