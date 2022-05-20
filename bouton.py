@@ -3,10 +3,7 @@ import websocket
 import os
 import RPi.GPIO as GPIO
 from classes.ProtocolBuilder import ProtocolBuilder
-from classes.Micro import Micro
-from classes.Audio import Audio
 from datetime import datetime
-from classes.ButtonRec import ButtonRec
 
 GPIO.cleanup()
 GPIO.setwarnings(False)
@@ -14,12 +11,8 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setup(17, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 GPIO.setup(18, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 GPIO.setup(4, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-print(GPIO.input(17))
 ws = websocket.create_connection("ws://localhost:8080")
 
-micro = Micro()
-audio = Audio()
-buttonRec = ButtonRec()
 DelMode = False
 deleteTime = datetime.now()
 saveMode = False
@@ -38,7 +31,6 @@ while True:
         DelMode = False
     # Takes photo
     if GPIO.input(17) == GPIO.HIGH:
-        print("pushed")
         protocol = ProtocolBuilder("button17", "HIGH")
         ws.send(protocol.buildProtocol())
         time.sleep(1)
@@ -48,7 +40,6 @@ while True:
         if (saveMode):
             delta = datetime.now() - recTime
             if int(delta.total_seconds()) > 0.20:
-                print("random")
                 protocol = ProtocolBuilder("button18", "on")
                 ws.send(protocol.buildProtocol())
                 saveMode = False
@@ -71,7 +62,6 @@ while True:
     # Delete audio file
     if GPIO.input(4) == GPIO.HIGH:
         if DelMode:
-            print("pushed")
             protocol = ProtocolBuilder("button4", "HIGH")
             ws.send(protocol.buildProtocol())
             time.sleep(2)

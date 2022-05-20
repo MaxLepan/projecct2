@@ -31,7 +31,6 @@ class SimpleEcho(WebSocket):
         protocol.decodeProtocol()
         sensor = protocol.sensor
         value = protocol.value
-        #modeFile = open("./database/mode.txt", "r")
         with open("./database/mode.txt", "r") as modeFile:
             modeLine = modeFile.readline()
             if isinstance(modeLine, str):
