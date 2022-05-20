@@ -48,6 +48,7 @@ while True:
         if (saveMode):
             delta = datetime.now() - recTime
             if int(delta.total_seconds()) > 0.20:
+                print("random")
                 protocol = ProtocolBuilder("button18", "on")
                 ws.send(protocol.buildProtocol())
                 saveMode = False
@@ -60,7 +61,6 @@ while True:
     # Stops audio recording
     if GPIO.input(18) == GPIO.LOW:
         if saveMode:
-            print("lezgo")
             saveMode = False
             os.system(f"play -v {volume/100} audio/systemAudio/keepPushingToRecord.ogg")
         else:
@@ -83,4 +83,3 @@ while True:
             deleteTime = datetime.now()
             time.sleep(0.2)
     time.sleep(0.2)
-    
