@@ -1,14 +1,7 @@
-from datetime import datetime
-import os
-import time
 from simple_websocket_server import WebSocketServer, WebSocket
 from classes.ProtocolReader import ProtocolReader
-from classes.AudioStoring import AudioStoring
 from classes.AudioGetter import AudioGetter
 from classes.Audio import Audio
-#from classes.ButtonRec import ButtonRec
-from classes.ButtonDelete import ButtonDelete
-#from classes.ButtonCamera import ButtonCamera
 from classes.Tutorial import Tutorial
 from classes.ExpertMode import ExpertMode
 from classes.IntermediaryMode import IntermediaryMode
