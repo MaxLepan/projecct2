@@ -62,8 +62,22 @@ class ExpertMode:
             self.getVolume()
             self.audio.play_audio("audio/systemAudio/soundChanged.ogg", self.volume)
 
-    def delButtonSend(self):
+    def delButtonSend(self, value, pattern):
         print("boo del")
+        audioGet = AudioGetter(pattern)
+        audioFile = audioGet.get_audio()
+        print("juste après ca")
+        if "noMessageRecorded" in audioFile:
+            self.getVolume()
+            self.audio.play_audio("audio/systemAudio/claque.ogg", self.volume)
+        else:
+            print("gniééé")
+            if value == "HIGH":
+                audioDelete = AudioStoring("", pattern)
+                print("par là")
+                audioDelete.deleteAudio()
+            elif value == "1":
+                self.audio.play_audio("audio/systemAudio/deleteConfirmationExpert.ogg", self.volume)
 
     def cameraButtonSend(self):
         print("ici")
