@@ -35,6 +35,8 @@ class SimpleEcho(WebSocket):
             modeLine = modeFile.readline()
             if isinstance(modeLine, str):
                 if modeLine != "":
+                    if SimpleEcho.stockage.mode != int(modeLine):
+                        self.restartMode()
                     SimpleEcho.stockage.mode = int(modeLine)
         volumeFile = open("./database/sound-volume.txt", "r")
         volumeLine = volumeFile.readline()
@@ -81,6 +83,12 @@ class SimpleEcho(WebSocket):
     def handle_close(self):
         print(self.address, 'closed')
         clients.remove(self)
+    
+    def restartMode(self):
+        SimpleEcho.tutoMode.cameraButton = False
+        SimpleEcho.tutoMode.recButton = False
+        SimpleEcho.tutoMode.delButton = False
+        SimpleEcho.patternSaved = False
         
         
 server = WebSocketServer('', 8080, SimpleEcho)

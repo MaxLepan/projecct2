@@ -31,6 +31,7 @@ while True:
         DelMode = False
     # Takes photo
     if GPIO.input(17) == GPIO.HIGH:
+        print("pushed")
         protocol = ProtocolBuilder("button17", "HIGH")
         ws.send(protocol.buildProtocol())
         time.sleep(1)
