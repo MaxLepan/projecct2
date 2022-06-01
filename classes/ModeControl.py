@@ -18,6 +18,7 @@ class ModeControl:
         self.clkLastState = GPIO.input(self.clk)
         self.lastChange = datetime.now()
         self.lastValue = self.counter
+        self.mode = 0
 
     def start(self):
         print(self.name, " is working !")
@@ -37,13 +38,19 @@ class ModeControl:
         dtState = GPIO.input(self.dt)
         if clkState != self.clkLastState:
             if dtState != clkState:
-                if self.counter < 3:
+                if self.counter < 15:
                     self.counter += 1
             else:
                 if self.counter > 1:
                     self.counter -= 1
+            if self.counter < 5:
+                self.mode = 1
+            elif self.counter > 5 and self.counter < 10:
+                self.mode = 2
+            elif self.counter > 10:
+                self.mode = 3
             
-            print(self.counter)
+            print(self.counter, "MODE", self.mode)
             self.setSave()
 
         self.save()
@@ -63,21 +70,24 @@ class ModeControl:
         delta = datetime.now() - self.lastChange
         if int(delta.total_seconds()) > 0.01 and self.isSave == False:
             print("Save")
+            lastModeFile = open(self.saveFilePath, "r")
+            lastMode = int(lastModeFile.readline())
             file = open(self.saveFilePath, "w")
-            file.write(f"{self.counter}")
+            file.write(f"{self.mode}")
             self.isSave = True
             volumeFile = open("./database/sound-volume.txt", "r")
             volume = int(volumeFile.readline())
             soundFile = ""
-            if self.counter == 1:
-                soundFile = "start-mode-expert"
-            elif self.counter == 2:
-                soundFile = "start-mode-intermediary"
-            elif self.counter == 3:
-                soundFile = "button-camera-tuto"
-                os.system(f"play -v {volume/100} audio/systemAudio/start-mode-tutoriel-1.ogg")
-                os.system(f"play -v {volume/100} audio/systemAudio/start-mode-tutoriel-2.ogg")
-            os.system(f"play -v {volume/100} audio/systemAudio/{soundFile}.ogg")
+            if lastMode != self.mode:
+                if self.mode == 1:
+                    soundFile = "start-mode-expert"
+                elif self.mode == 2:
+                    soundFile = "start-mode-intermediary"
+                elif self.mode == 3:
+                    soundFile = "button-camera-tuto"
+                    os.system(f"play -v {volume/100} audio/systemAudio/start-mode-tutoriel-1.ogg")
+                    os.system(f"play -v {volume/100} audio/systemAudio/start-mode-tutoriel-2.ogg")
+                os.system(f"play -v {volume/100} audio/systemAudio/{soundFile}.ogg")
 
             
 modeControle = ModeControl("Mode")
