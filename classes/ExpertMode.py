@@ -53,7 +53,7 @@ class ExpertMode:
                 self.micro.start_recording(pattern)
             else:
                 self.getVolume()
-                self.audio.play_audio("audio/systemAudio/claque.ogg", self.volume)
+                self.audio.play_audio("audio/systemAudio/soundChanged.ogg", self.volume)
         elif value == "off" and self.recording:
             self.micro.stop_recording()
             self.recording = False
@@ -65,7 +65,7 @@ class ExpertMode:
         audioFile = audioGet.get_audio()
         if "noMessageRecorded" in audioFile:
             self.getVolume()
-            self.audio.play_audio("audio/systemAudio/claque.ogg", self.volume)
+            self.audio.play_audio("audio/systemAudio/soundChanged.ogg", self.volume)
         else:
             if value == "HIGH":
                 audioDelete = AudioStoring("", pattern)
