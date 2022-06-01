@@ -1,4 +1,5 @@
-0 triangle_bleu
-1 cercle_jaune
-2 formes_orange
-3 fond
+0 rond violet
+1 triangle rouge
+2 fleur bleu
+3 demi cercle vert
+4 Background

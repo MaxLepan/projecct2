@@ -34,7 +34,8 @@ while True:
         print("pushed")
         protocol = ProtocolBuilder("button17", "HIGH")
         ws.send(protocol.buildProtocol())
-        time.sleep(1)
+        while GPIO.input(17) == GPIO.HIGH:
+            time.sleep(0.1)
 
     # Start audio recording
     if GPIO.input(18) == GPIO.HIGH:
