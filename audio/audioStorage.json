@@ -1,5 +1,10 @@
 {
     "audioFiles": [
-        
+        {
+            "4": "audio/systemAudio/nothingToScan.ogg"
+        },
+        {
+            "0": "audio/audioFiles/audio_2022-06-02_10-58-45.ogg"
+        }
     ]
 }

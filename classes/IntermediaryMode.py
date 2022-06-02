@@ -76,7 +76,7 @@ class IntermediaryMode:
     def cameraButtonSend(self):
         led = subprocess.Popen(["python", "./led.py"])
         self.camera.take_photo()
-        time.sleep(2)
+        time.sleep(5)
         led.terminate()
         
 

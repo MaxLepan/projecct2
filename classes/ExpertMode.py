@@ -75,8 +75,9 @@ class ExpertMode:
 
     def cameraButtonSend(self):
         led = subprocess.Popen(["python", "./led.py"])
+        time.sleep(1)
         self.camera.take_photo()
-        time.sleep(2)
+        time.sleep(15)
         led.terminate()
         
 

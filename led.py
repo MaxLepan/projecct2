@@ -46,11 +46,7 @@ signal.signal(signal.SIGTERM, end_process)
 
 try:
 	while True:
-		setColor(0x885511)
+		GPIO.output(29, GPIO.HIGH)
 except :
-	p_R.stop()
-	p_G.stop()
-	p_B.stop()
-	for i in pins:
-		GPIO.output(pins[i], GPIO.HIGH)    # Turn off all leds
+	GPIO.output(29, GPIO.LOW)    # Turn off all leds
 	GPIO.cleanup()

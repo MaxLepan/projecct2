@@ -36,7 +36,8 @@ class TensorFlow:
 
         prediction = self.model.predict(data)
         prediction_max = np.argmax(prediction[0])
-
+        self.pattern = prediction_max
+        print(self.pattern)
 
 tensorflow = TensorFlow()
 
