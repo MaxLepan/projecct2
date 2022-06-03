@@ -1,6 +1,6 @@
 import subprocess
 from datetime import datetime
-from .AudioStoring import AudioStoring
+from AudioStoring import AudioStoring
 import json
 
 

@@ -37,33 +37,33 @@ class Tutorial:
             if sensor == "button4":
                 self.delButtonSend(value)
         else:
-            os.system(f"play -v {self.volume / 100} ./audio/systemAudio/fin-tutoriel.ogg")
+            self.audio.play_audio("audio/systemAudio/fin-tutoriel.ogg", self.volume)
 
 
     def recButtonSend(self, value):
         if self.recButton:
-            os.system(f"play -v {self.volume / 100} ./audio/systemAudio/not-good-button.ogg")
+            self.audio.play_audio("audio/systemAudio/not-good-button.ogg", self.volume)
         elif not self.cameraButton:
-            os.system(f"play -v {self.volume / 100} ./audio/systemAudio/not-good-button.ogg")
+            self.audio.play_audio("audio/systemAudio/not-good-button.ogg", self.volume)
         elif value == "on":
             self.audio.play_audio("audio/systemAudio/soundChanged.ogg", self.volume)
             self.micro.start_recording("tuto")
         elif value == "off":
             self.micro.stop_recording()
-            os.system(f"play -v {self.volume / 100} ./audio/systemAudio/button-del-tuto.ogg")
+            self.audio.play_audio("audio/systemAudio/button-del-tuto.ogg", self.volume)
             self.recButton = True
 
 
     def delButtonSend(self, value):
         if self.delButton:
-            os.system(f"play -v {self.volume / 100} ./audio/systemAudio/not-good-button.ogg")
+            self.audio.play_audio("audio/systemAudio/not-good-button.ogg", self.volume)
         elif not self.recButton or not self.cameraButton:
-            os.system(f"play -v {self.volume / 100} ./audio/systemAudio/not-good-button.ogg")
+            self.audio.play_audio("audio/systemAudio/not-good-button.ogg", self.volume)
         elif value == "HIGH":
             self.delButton = True
             audioDelete = AudioStoring("", "tuto")
             audioDelete.deleteAudio()
-            os.system(f"play -v {self.volume / 100} ./audio/systemAudio/fin-tutoriel.ogg")
+            self.audio.play_audio("audio/systemAudio/fin-tutoriel.ogg", self.volume)
         elif value == "1":
             self.audio.play_audio("audio/systemAudio/deleteConfirmationIntermediary.ogg", self.volume)
 
@@ -76,9 +76,11 @@ class Tutorial:
             self.audio.play_audio("audio/systemAudio/not-good-button.ogg", self.volume)
         else:
             self.cameraButton = True
-            os.system(f"play -v {self.volume / 100} ./audio/systemAudio/button-rec-tuto.ogg")
+            self.audio.play_audio("audio/systemAudio/button-rec-tuto.ogg", self.volume)
             
 
-
-#tutorial = Tutorial()
-#tutorial.action("button18")
+tutorial = Tutorial()
+tutorial.action("button17:on")
+tutorial.action("button18:on")
+tutorial.action("button18:off")
+tutorial.action("button17:on")
