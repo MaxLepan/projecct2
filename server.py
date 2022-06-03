@@ -8,8 +8,11 @@ from classes.IntermediaryMode import IntermediaryMode
 
 clients = []
 
-
-
+recMode = False 
+tutoMode = Tutorial()
+expertMode = ExpertMode("./img/photo_analyse.png")
+intermediaryMode = IntermediaryMode("./img/photo_analyse.png")
+audio = Audio()
 
 class Stockage:
 
@@ -17,24 +20,17 @@ class Stockage:
         self.pattern = 0
         self.mode = 1
         self.volume = 100
+        self.patternSaved = False
 
-
+stockage = Stockage()
 
 class SimpleEcho(WebSocket):
-    #global tutoMode
-    #global patternSaved
-    #global recMode
-    #global expertMode 
-    #global intermediaryMode
-    #global audio
-    #global stockage
-    patternSaved = False
-    recMode = False 
-    tutoMode = Tutorial()
-    expertMode = ExpertMode("./img/photo_analyse.png")
-    intermediaryMode = IntermediaryMode("./img/photo_analyse.png")
-    audio = Audio()
-    stockage = Stockage()
+    global tutoMode
+    global recMode
+    global expertMode 
+    global intermediaryMode
+    global audio
+    global stockage
 
     def handle(self):
         protocol = ProtocolReader(self.data)
@@ -46,44 +42,43 @@ class SimpleEcho(WebSocket):
             modeLine = modeFile.readline()
             if isinstance(modeLine, str):
                 if modeLine != "":
-                    if SimpleEcho.stockage.mode != int(modeLine):
+                    if stockage.mode != int(modeLine):
                         self.restartMode()
-                    SimpleEcho.stockage.mode = int(modeLine)
+                    stockage.mode = int(modeLine)
         volumeFile = open("./database/sound-volume.txt", "r")
         volumeLine = volumeFile.readline()
         if isinstance(volumeLine, str):
             volumeFile.seek(0)
             if volumeLine != "":
                 volumeFile.seek(0)
-                SimpleEcho.stockage.volume = int(volumeLine)
+                stockage.volume = int(volumeLine)
         
         if sensor == "Tensorflow":
-            SimpleEcho.stockage.pattern = value
+            stockage.pattern = value
             print(value)
             audioGetter = AudioGetter(value)
             audioFile = audioGetter.get_audio()
             print(audioFile)
-            SimpleEcho.audio.play_audio(audioFile, SimpleEcho.stockage.volume)
-            SimpleEcho.patternSaved = True
+            audio.play_audio(audioFile, stockage.volume)
+            stockage.patternSaved = True
 
 
-        elif SimpleEcho.stockage.mode == 1:
-            print("In simple Mode 1")
-            SimpleEcho.expertMode.action(self.data, SimpleEcho.patternSaved, SimpleEcho.stockage.pattern)
+        elif stockage.mode == 1:
+            expertMode.action(self.data, stockage.patternSaved, stockage.pattern)
             if sensor == "button17":
                 for client in clients:
                     if client != self:    
                         client.send_message("Tensorflow ready")
 
-        elif SimpleEcho.stockage.mode == 2:
-            SimpleEcho.intermediaryMode.action(self.data, SimpleEcho.patternSaved, SimpleEcho.stockage.pattern)
+        elif stockage.mode == 2:
+            intermediaryMode.action(self.data, stockage.patternSaved, stockage.pattern)
             if sensor == "button17":
                 for client in clients:
                     if client != self:
                         client.send_message("Tensorflow ready")
         
-        elif SimpleEcho.stockage.mode == 3:
-            SimpleEcho.tutoMode.action(self.data)
+        elif stockage.mode == 3:
+            tutoMode.action(self.data)
 
     def connected(self):
         print(self.address, 'connected')
@@ -94,10 +89,10 @@ class SimpleEcho(WebSocket):
         clients.remove(self)
     
     def restartMode(self):
-        SimpleEcho.tutoMode.cameraButton = False
-        SimpleEcho.tutoMode.recButton = False
-        SimpleEcho.tutoMode.delButton = False
-        SimpleEcho.patternSaved = False
+        tutoMode.cameraButton = False
+        tutoMode.recButton = False
+        tutoMode.delButton = False
+        stockage.patternSaved = False
         
         
 server = WebSocketServer('', 8080, SimpleEcho)

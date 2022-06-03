@@ -33,8 +33,6 @@ class ExpertMode:
         sensor = protocol.sensor
         value = protocol.value
         self.getVolume()
-        print(sensor)
-        print(value)
         if sensor == "button18" and patternSaved:
             self.recButtonSend(value, pattern)
         if sensor == "button17":

@@ -2,7 +2,7 @@ sleep 30
 
 cd /home/pi/Documents/project2
 python ./server.py &
-sleep 5
+sleep 15
 python ./bouton.py &
 python classes/Tensorflow.py &
 sleep 25
