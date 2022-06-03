@@ -43,16 +43,18 @@ class AudioStoring:
             self.list_obj = json.load(file)
         print(self.list_obj["audioFiles"])
         if len(self.list_obj["audioFiles"]) > 0:
+            itemFound = False
             for item in self.list_obj["audioFiles"]:
                 if item.get(self.uid):
                     index = self.list_obj["audioFiles"].index(item)
                     del self.list_obj["audioFiles"][index]
                     os.system(f"play -v {self.volume/100} audio/systemAudio/messageDeleted.ogg")
+                    itemFound = True
                     break
-                else:
-                    print("no mess del")
-                    os.system(f"play -v {self.volume/100} audio/systemAudio/nothingToDelete.ogg")
-          
+            if itemFound == False:
+                print("no mess del")
+                os.system(f"play -v {self.volume/100} audio/systemAudio/nothingToDelete.ogg")
+                
         with open("./audio/audioStorage.json", "w") as file:
             json.dump(self.list_obj, file, indent=4, separators=(',', ': '))
 

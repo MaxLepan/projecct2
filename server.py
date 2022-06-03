@@ -8,6 +8,9 @@ from classes.IntermediaryMode import IntermediaryMode
 
 clients = []
 
+
+
+
 class Stockage:
 
     def __init__(self):
@@ -16,21 +19,29 @@ class Stockage:
         self.volume = 100
 
 
-class SimpleEcho(WebSocket):
 
-    stockage = Stockage()
+class SimpleEcho(WebSocket):
+    #global tutoMode
+    #global patternSaved
+    #global recMode
+    #global expertMode 
+    #global intermediaryMode
+    #global audio
+    #global stockage
     patternSaved = False
     recMode = False 
     tutoMode = Tutorial()
     expertMode = ExpertMode("./img/photo_analyse.png")
     intermediaryMode = IntermediaryMode("./img/photo_analyse.png")
     audio = Audio()
-    
+    stockage = Stockage()
+
     def handle(self):
         protocol = ProtocolReader(self.data)
         protocol.decodeProtocol()
         sensor = protocol.sensor
         value = protocol.value
+        
         with open("./database/mode.txt", "r") as modeFile:
             modeLine = modeFile.readline()
             if isinstance(modeLine, str):
@@ -57,6 +68,7 @@ class SimpleEcho(WebSocket):
 
 
         elif SimpleEcho.stockage.mode == 1:
+            print("In simple Mode 1")
             SimpleEcho.expertMode.action(self.data, SimpleEcho.patternSaved, SimpleEcho.stockage.pattern)
             if sensor == "button17":
                 for client in clients:

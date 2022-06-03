@@ -33,7 +33,8 @@ class ExpertMode:
         sensor = protocol.sensor
         value = protocol.value
         self.getVolume()
-
+        print(sensor)
+        print(value)
         if sensor == "button18" and patternSaved:
             self.recButtonSend(value, pattern)
         if sensor == "button17":
@@ -43,6 +44,7 @@ class ExpertMode:
 
 
     def recButtonSend(self, value, pattern):
+        print("In Rec")
         if value == "on":
             audioGet = AudioGetter(pattern)
             audioFile = audioGet.get_audio()
@@ -77,7 +79,7 @@ class ExpertMode:
         led = subprocess.Popen(["python", "./led.py"])
         time.sleep(1)
         self.camera.take_photo()
-        time.sleep(15)
+        time.sleep(5)
         led.terminate()
         
 

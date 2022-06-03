@@ -17,6 +17,11 @@ DelMode = False
 deleteTime = datetime.now()
 saveMode = False
 recTime = datetime.now()
+canStart = True
+isRecording = False
+
+button18Pressed = False
+button4Pressed = False
 
 while True:
     volume = 100
@@ -38,40 +43,85 @@ while True:
             time.sleep(0.1)
 
     # Start audio recording
+
     if GPIO.input(18) == GPIO.HIGH:
-        if (saveMode):
+
+        if button18Pressed == False:
+            button18Pressed = True
+            recTime = datetime.now()
+        else:
             delta = datetime.now() - recTime
-            if int(delta.total_seconds()) > 0.20:
+            if int(delta.total_seconds()) > 1.0:
+                if canStart:
+                    canStart = False
+                    print("Declenche enregistrement")
+                    protocol = ProtocolBuilder("button18", "on")
+                    ws.send(protocol.buildProtocol())
+                    
+        
+        """
+        if (isRecording == False):
+            
+            if canStart == True:
                 protocol = ProtocolBuilder("button18", "on")
                 ws.send(protocol.buildProtocol())
-                saveMode = False
-                while GPIO.input(18) == GPIO.HIGH:
-                    time.sleep(0.1)
-        else:
-            saveMode = True
-            recTime = datetime.now()
+                recDidStart = True
+                saveMode = True
+                
+                #while GPIO.input(18) == GPIO.HIGH:
+                #    time.sleep(0.1)
+        """
 
     # Stops audio recording
     if GPIO.input(18) == GPIO.LOW:
-        if saveMode:
+
+        if button18Pressed == True:
+            button18Pressed = False
+            delta = datetime.now() - recTime
+            if int(delta.total_seconds()) < 0.20:
+                print("Appuie court")
+                os.system(f"play -v {volume/100} audio/systemAudio/keepPushingToRecord.ogg")
+            else:
+                print("Fin de l'enregistrement")
+                canStart = True
+                protocol = ProtocolBuilder("button18", "off")
+                ws.send(protocol.buildProtocol())
+
+        """
+        
             saveMode = False
-            os.system(f"play -v {volume/100} audio/systemAudio/keepPushingToRecord.ogg")
+            
         else:
+            canStart = True
+        elif recDidStart:
+            recDidStart = False
             protocol = ProtocolBuilder("button18", "off")
-            ws.send(protocol.buildProtocol()) 
+            print(protocol.buildProtocol())
+            ws.send(protocol.buildProtocol())
+        """ 
         time.sleep(0.2)
 
     # Delete audio file
     if GPIO.input(4) == GPIO.HIGH:
-        if DelMode:
-            protocol = ProtocolBuilder("button4", "HIGH")
-            ws.send(protocol.buildProtocol())
-            time.sleep(2)
-            DelMode = False
-        else:
-            protocol = ProtocolBuilder("button4", "1")
-            ws.send(protocol.buildProtocol())
-            DelMode = True
-            deleteTime = datetime.now()
-            time.sleep(0.2)
+        if button4Pressed == False:
+            button4Pressed = True
+
+    if GPIO.input(4) == GPIO.LOW:
+         if button4Pressed == True:
+            button4Pressed = False
+            if DelMode:
+                protocol = ProtocolBuilder("button4", "HIGH")
+                print("Send Suprression")
+                ws.send(protocol.buildProtocol())
+                time.sleep(2)
+                DelMode = False
+            else:
+                protocol = ProtocolBuilder("button4", "1")
+                print("Ask for Suprression")
+                ws.send(protocol.buildProtocol())
+                DelMode = True
+                deleteTime = datetime.now()
+                time.sleep(0.2)
+
+
     time.sleep(0.2)

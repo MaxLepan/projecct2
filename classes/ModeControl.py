@@ -79,6 +79,7 @@ class ModeControl:
             volume = int(volumeFile.readline())
             soundFile = ""
             if lastMode != self.mode:
+                os.system(f"^C")
                 if self.mode == 1:
                     soundFile = "start-mode-expert"
                 elif self.mode == 2:
