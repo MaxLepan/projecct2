@@ -2,6 +2,7 @@ from RPi import GPIO
 from time import sleep
 import os
 from datetime import datetime
+from Audio import Audio
 
 
 class ModeControl:
@@ -18,7 +19,8 @@ class ModeControl:
         self.clkLastState = GPIO.input(self.clk)
         self.lastChange = datetime.now()
         self.lastValue = self.counter
-        self.mode = 0
+        self.mode = self.initMode()
+        self.audio = Audio()
 
     def start(self):
         print(self.name, " is working !")
@@ -62,8 +64,12 @@ class ModeControl:
         self.isSave = False
         self.lastChange = datetime.now()
 
-    def initCounter(self) -> int:
+    def initMode(self) -> int:
         file = open(self.saveFilePath, "r")
+        return int(file.readline())
+    
+    def initCounter(self):
+        file = open("./database/counter_mode.txt", "r")
         return int(file.readline())
 
     def save(self):
@@ -74,6 +80,8 @@ class ModeControl:
             lastMode = int(lastModeFile.readline())
             file = open(self.saveFilePath, "w")
             file.write(f"{self.mode}")
+            fileCounter = open("./database/counter_mode.txt", "w")
+            fileCounter.write(f"{self.counter}")
             self.isSave = True
             volumeFile = open("./database/sound-volume.txt", "r")
             volume = int(volumeFile.readline())
@@ -85,8 +93,8 @@ class ModeControl:
                 elif self.mode == 2:
                     soundFile = "start-mode-intermediary"
                 elif self.mode == 3:
-                    soundFile = "start-mode-tutoriel"
-                os.system(f"play -v {volume/100} audio/systemAudio/{soundFile}.ogg")
+                    soundFile = "start-mode-tutorial"
+                self.audio.play_audio(f"audio/systemAudio/{soundFile}.ogg", volume)
 
             
 modeControle = ModeControl("Mode")

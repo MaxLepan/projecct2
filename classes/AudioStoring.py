@@ -54,6 +54,7 @@ class AudioStoring:
             if itemFound == False:
                 print("no mess del")
                 os.system(f"play -v {self.volume/100} audio/systemAudio/nothingToDelete.ogg")
+        print("aaaaaaaaaaaaaaaaaaaaaaa", self.list_obj)
                 
         with open("./audio/audioStorage.json", "w") as file:
             json.dump(self.list_obj, file, indent=4, separators=(',', ': '))
