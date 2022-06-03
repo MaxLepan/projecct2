@@ -22,4 +22,4 @@ if mode == 1:
 if mode == 2:
     os.system(f"play -v {volume / 100} ./audio/systemAudio/start-mode-intermediary.ogg")
 if mode == 3:
-    os.system(f"play -v {volume / 100} ./audio/systemAudio/start-mode-tutoriel.ogg")
+    os.system(f"play -v {volume / 100} ./audio/systemAudio/start-mode-tutorial.ogg")
