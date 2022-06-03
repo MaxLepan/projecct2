@@ -84,9 +84,7 @@ class ModeControl:
                 elif self.mode == 2:
                     soundFile = "start-mode-intermediary"
                 elif self.mode == 3:
-                    soundFile = "button-camera-tuto"
-                    os.system(f"play -v {volume/100} audio/systemAudio/start-mode-tutoriel-1.ogg")
-                    os.system(f"play -v {volume/100} audio/systemAudio/start-mode-tutoriel-2.ogg")
+                    soundFile = "start-mode-tutoriel"
                 os.system(f"play -v {volume/100} audio/systemAudio/{soundFile}.ogg")
 
             
