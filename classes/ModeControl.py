@@ -1,6 +1,7 @@
 from RPi import GPIO
 from time import sleep
 import os
+import time
 from datetime import datetime
 from Audio import Audio
 
@@ -19,6 +20,7 @@ class ModeControl:
         self.clkLastState = GPIO.input(self.clk)
         self.lastChange = datetime.now()
         self.lastValue = self.counter
+        self.lastMode = self.initMode()
         self.mode = self.initMode()
         self.audio = Audio()
 
@@ -54,7 +56,8 @@ class ModeControl:
             
             print(self.counter, "MODE", self.mode)
             self.setSave()
-
+        file = open(self.saveFilePath, "r")
+        self.lastMode = int(file.readline())
         self.save()
 
         self.clkLastState = clkState
@@ -76,8 +79,6 @@ class ModeControl:
         delta = datetime.now() - self.lastChange
         if int(delta.total_seconds()) > 0.01 and self.isSave == False:
             print("Save")
-            lastModeFile = open(self.saveFilePath, "r")
-            lastMode = int(lastModeFile.readline())
             file = open(self.saveFilePath, "w")
             file.write(f"{self.mode}")
             fileCounter = open("./database/counter_mode.txt", "w")
@@ -86,8 +87,7 @@ class ModeControl:
             volumeFile = open("./database/sound-volume.txt", "r")
             volume = int(volumeFile.readline())
             soundFile = ""
-            if lastMode != self.mode:
-                os.system(f"^C")
+            if self.lastMode != self.mode:
                 if self.mode == 1:
                     soundFile = "start-mode-expert"
                 elif self.mode == 2:
