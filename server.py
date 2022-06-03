@@ -83,10 +83,7 @@ class SimpleEcho(WebSocket):
                         client.send_message("Tensorflow ready")
         
         elif SimpleEcho.stockage.mode == 3:
-            if sensor == "button18" and value == "on":
-                SimpleEcho.tutoMode.action(sensor)
-            elif sensor != "button18":
-                SimpleEcho.tutoMode.action(sensor)
+            SimpleEcho.tutoMode.action(self.data)
 
     def connected(self):
         print(self.address, 'connected')
