@@ -1,6 +1,6 @@
 import subprocess
 from datetime import datetime
-from AudioStoring import AudioStoring
+from .AudioStoring import AudioStoring
 import json
 
 
@@ -27,7 +27,7 @@ class Micro:
         
 
 # Uncomment to run tests
-#micro = Micro()
-#micro.start_recording(0)
-#time.sleep(2)
-#micro.stop_recording()
+"""micro = Micro()
+micro.start_recording(0)
+time.sleep(2)
+micro.stop_recording()"""

@@ -1,5 +1,5 @@
 import json
-import os
+from .Audio import Audio
 
 
 class AudioStoring:
@@ -10,6 +10,7 @@ class AudioStoring:
         self.list_obj = []
         volumeFile = open("./database/sound-volume.txt", "r")
         self.volume = int(volumeFile.readline())
+        self.audio = Audio()
 
     def store(self):
 
@@ -34,7 +35,7 @@ class AudioStoring:
         with open("./audio/audioStorage.json", "w") as file:
             json.dump(self.list_obj, file, indent=4, separators=(',', ': '))
 
-        os.system("play audio/systemAudio/messageRegistered.ogg")
+        self.audio.play_audio("audio/systemAudio/messageRegistered.ogg", self.volume)
 
     def deleteAudio(self):
         
@@ -48,19 +49,16 @@ class AudioStoring:
                 if item.get(self.uid):
                     index = self.list_obj["audioFiles"].index(item)
                     del self.list_obj["audioFiles"][index]
-                    os.system(f"play -v {self.volume/100} audio/systemAudio/messageDeleted.ogg")
+                    self.audio.play_audio("audio/systemAudio/messageDeleted.ogg", self.volume)
                     itemFound = True
                     break
             if itemFound == False:
                 print("no mess del")
-                os.system(f"play -v {self.volume/100} audio/systemAudio/nothingToDelete.ogg")
-        print("aaaaaaaaaaaaaaaaaaaaaaa", self.list_obj)
+                self.audio.play_audio("audio/systemAudio/nothingToDelete.ogg", self.volume)
                 
         with open("./audio/audioStorage.json", "w") as file:
             json.dump(self.list_obj, file, indent=4, separators=(',', ': '))
 
-
-        print("Deleted")
         
         
 # Uncomment to run tests

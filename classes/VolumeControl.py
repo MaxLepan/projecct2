@@ -69,7 +69,6 @@ class VolumeControl:
             self.isSave = True
             
             self.audio.play_audio("audio/systemAudio/soundChanged.ogg", self.counter)
-            #os.system(f"play -v {self.counter/100} audio/systemAudio/soundChanged.ogg")
 
 #Uncomment to run tests
 vs = VolumeControl("Volume")
