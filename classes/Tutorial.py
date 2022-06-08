@@ -1,4 +1,4 @@
-import os
+import time
 
 from .Audio import Audio
 from .Micro import Micro
@@ -63,6 +63,7 @@ class Tutorial:
             self.delButton = True
             audioDelete = AudioStoring("", "tuto")
             audioDelete.deleteAudio()
+            time.sleep(1)
             self.audio.play_audio("audio/systemAudio/fin-tutoriel.ogg", self.volume)
         elif value == "1":
             self.audio.play_audio("audio/systemAudio/deleteConfirmationIntermediary.ogg", self.volume)
