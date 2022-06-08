@@ -1,5 +1,5 @@
-0 rond violet
-1 triangle rouge
-2 fleur bleu
-3 demi cercle vert
-4 Background
+0 rose
+1 vert
+2 jaune
+3 bleu
+4 background
