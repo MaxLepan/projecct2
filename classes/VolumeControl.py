@@ -42,7 +42,7 @@ class VolumeControl:
                 if self.counter < 150:
                     self.counter += 1
             else:
-                if self.counter > 0:
+                if self.counter > 1:
                     self.counter -= 1
             print(self.counter)
             self.setSave()

@@ -4,19 +4,13 @@ import signal
 
 colors = [0xFF0000, 0x00FF00, 0x0000FF, 0xFFFF00, 0xFF00FF, 0x00FFFF]
 pins = {'pin_R':29, 'pin_G':31, 'pin_B':33}  # pins is a dict
-
-GPIO.setmode(GPIO.BOARD)       # Numbers GPIOs by physical location
+GPIO.cleanup()
+GPIO.setmode(GPIO.BOARD)
+GPIO.setup(29, GPIO.OUT)# Numbers GPIOs by physical location
 for i in pins:
 	GPIO.setup(pins[i], GPIO.OUT)   # Set pins' mode is output
 	GPIO.output(pins[i], GPIO.HIGH) # Set pins to high(+3.3V) to off led
 
-p_R = GPIO.PWM(pins['pin_R'], 5000)  # set Frequece to 2KHz
-p_G = GPIO.PWM(pins['pin_G'], 5000)
-p_B = GPIO.PWM(pins['pin_B'], 5000)
-
-p_R.start(0)      # Initial duty Cycle = 0(leds off)
-p_G.start(0)
-p_B.start(0)
 
 def map(x, in_min, in_max, out_min, out_max):
 	return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
@@ -41,7 +35,7 @@ def end_process():
 	for i in pins:
 		GPIO.output(pins[i], GPIO.HIGH)    # Turn off all leds
 	GPIO.cleanup()
-
+GPIO.output(29, GPIO.HIGH)
 signal.signal(signal.SIGTERM, end_process)
 
 try:

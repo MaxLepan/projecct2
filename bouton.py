@@ -81,7 +81,7 @@ while True:
             delta = datetime.now() - recTime
             if int(delta.total_seconds()) < 0.20:
                 print("Appuie court")
-                audio.play_audio("audio/systemAudio/keepPushingToRecord.ogg")
+                audio.play_audio("audio/systemAudio/keepPushingToRecord.ogg", volume)
             else:
                 print("Fin de l'enregistrement")
                 canStart = True
@@ -92,6 +92,7 @@ while True:
 
     # Delete audio file
     if GPIO.input(4) == GPIO.HIGH:
+        print('boo')
         if button4Pressed == False:
             button4Pressed = True
 
