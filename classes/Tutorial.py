@@ -1,4 +1,3 @@
-import os
 
 from .Audio import Audio
 from .Micro import Micro
@@ -79,8 +78,8 @@ class Tutorial:
             self.audio.play_audio("audio/systemAudio/button-rec-tuto.ogg", self.volume)
             
 
-tutorial = Tutorial()
+""" tutorial = Tutorial()
 tutorial.action("button17:on")
 tutorial.action("button18:on")
 tutorial.action("button18:off")
-tutorial.action("button17:on")
+tutorial.action("button17:on") """
