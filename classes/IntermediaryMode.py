@@ -58,6 +58,7 @@ class IntermediaryMode:
             self.recording = False
             self.getVolume()
             self.audio.play_audio("audio/systemAudio/validation.ogg", self.volume)
+            time.sleep(1)
             self.audio.play_audio("audio/systemAudio/messageRegistered.ogg", self.volume)
 
     def delButtonSend(self, value, pattern):
@@ -65,6 +66,8 @@ class IntermediaryMode:
         audioFile = audioGet.get_audio()
         if "noMessageRecorded" in audioFile:
             self.getVolume()
+            self.audio.play_audio("audio/systemAudio/validation.ogg", self.volume)
+            time.sleep(1)
             self.audio.play_audio("audio/systemAudio/nothingToDelete.ogg", self.volume)
         else:
             if value == "HIGH":

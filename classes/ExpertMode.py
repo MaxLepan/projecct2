@@ -65,7 +65,7 @@ class ExpertMode:
         audioFile = audioGet.get_audio()
         if "noMessageRecorded" in audioFile:
             self.getVolume()
-            self.audio.play_audio("audio/systemAudio/soundChanged.ogg", self.volume)
+            self.audio.play_audio("audio/systemAudio/validation.ogg", self.volume)
         else:
             if value == "HIGH":
                 audioDelete = AudioStoring("", pattern)
