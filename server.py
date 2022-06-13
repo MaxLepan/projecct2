@@ -1,7 +1,7 @@
 from simple_websocket_server import WebSocketServer, WebSocket
 from classes.ProtocolReader import ProtocolReader
 from classes.AudioGetter import AudioGetter
-from classes.Audio import Audio
+from classes.Audio import audio
 from classes.Tutorial import Tutorial
 from classes.ExpertMode import ExpertMode
 from classes.IntermediaryMode import IntermediaryMode
@@ -12,7 +12,7 @@ recMode = False
 tutoMode = Tutorial()
 expertMode = ExpertMode("./img/photo_analyse.png")
 intermediaryMode = IntermediaryMode("./img/photo_analyse.png")
-audio = Audio()
+audio = audio
 
 class Stockage:
 
@@ -45,6 +45,7 @@ class SimpleEcho(WebSocket):
                     if stockage.mode != int(modeLine):
                         self.restartMode()
                     stockage.mode = int(modeLine)
+
         volumeFile = open("./database/sound-volume.txt", "r")
         volumeLine = volumeFile.readline()
         if isinstance(volumeLine, str):
@@ -66,8 +67,9 @@ class SimpleEcho(WebSocket):
         elif stockage.mode == 1:
             expertMode.action(self.data, stockage.patternSaved, stockage.pattern)
             if sensor == "button17":
+                audio.play_audio("audio/systemAudio/radard.ogg", stockage.volume)
                 for client in clients:
-                    if client != self:    
+                    if client != self:
                         client.send_message("Tensorflow ready")
 
         elif stockage.mode == 2:

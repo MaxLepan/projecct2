@@ -1,6 +1,6 @@
 import time
 import websocket
-from classes.Audio import Audio
+from classes.Audio import audio
 import RPi.GPIO as GPIO
 from classes.ProtocolBuilder import ProtocolBuilder
 from datetime import datetime
@@ -12,7 +12,7 @@ GPIO.setup(17, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 GPIO.setup(18, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 GPIO.setup(4, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 ws = websocket.create_connection("ws://localhost:8080")
-audio = Audio()
+audio = audio
 
 DelMode = False
 deleteTime = datetime.now()

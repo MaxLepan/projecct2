@@ -1,5 +1,5 @@
 import json
-from .Audio import Audio
+from .Audio import audio
 
 
 class AudioStoring:
@@ -10,7 +10,7 @@ class AudioStoring:
         self.list_obj = []
         volumeFile = open("./database/sound-volume.txt", "r")
         self.volume = int(volumeFile.readline())
-        self.audio = Audio()
+        self.audio = audio
 
     def store(self):
 

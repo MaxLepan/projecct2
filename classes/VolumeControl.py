@@ -1,8 +1,7 @@
 from RPi import GPIO
 from time import sleep
-import os
 from datetime import datetime
-from Audio import Audio
+from Audio import audio
 
 
 class VolumeControl:
@@ -19,7 +18,7 @@ class VolumeControl:
         self.clkLastState = GPIO.input(self.clk)
         self.lastChange = datetime.now()
         self.lastValue = self.counter
-        self.audio = Audio()
+        self.audio = audio
 
     def start(self):
         print(self.name, " is working !")

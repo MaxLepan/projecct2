@@ -1,6 +1,6 @@
 import time
 
-from .Audio import Audio
+from .Audio import audio
 from .Micro import Micro
 from .ProtocolReader import ProtocolReader
 from .AudioStoring import AudioStoring
@@ -15,7 +15,7 @@ class Tutorial:
         self.delButton = False
         self.volume = 100
         self.micro = Micro()
-        self.audio = Audio()
+        self.audio = audio
 
     def action(self, button):
         volumeFile = open("./database/sound-volume.txt", "r")
@@ -46,7 +46,7 @@ class Tutorial:
         elif not self.cameraButton:
             self.audio.play_audio("audio/systemAudio/not-good-button.ogg", self.volume)
         elif value == "on":
-            self.audio.play_audio("audio/systemAudio/soundChanged.ogg", self.volume)
+            self.audio.play_audio("audio/systemAudio/start-enregistrement.ogg", self.volume)
             self.micro.start_recording("tuto")
         elif value == "off":
             self.micro.stop_recording()

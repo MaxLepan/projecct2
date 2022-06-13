@@ -1,7 +1,7 @@
 import os
 from .Camera import Camera
 from .AudioGetter import AudioGetter
-from .Audio import Audio
+from .Audio import audio
 from .AudioStoring import AudioStoring
 from .ProtocolReader import ProtocolReader
 from .Micro import Micro
@@ -15,7 +15,7 @@ class ExpertMode:
         self.camera = Camera(file)
         self.volume = 100
         self.micro = Micro()
-        self.audio = Audio()
+        self.audio = audio
         self.recording = False
 
     def getVolume(self):
@@ -49,16 +49,16 @@ class ExpertMode:
             if "noMessageRecorded" in audioFile:
                 self.recording = True
                 self.getVolume()
-                self.audio.play_audio("audio/systemAudio/soundChanged.ogg", self.volume)
+                self.audio.play_audio("audio/systemAudio/start-enregistrement.ogg", self.volume)
                 self.micro.start_recording(pattern)
             else:
                 self.getVolume()
-                self.audio.play_audio("audio/systemAudio/soundChanged.ogg", self.volume)
+                self.audio.play_audio("audio/systemAudio/refus.ogg", self.volume)
         elif value == "off" and self.recording:
             self.micro.stop_recording()
             self.recording = False
             self.getVolume()
-            self.audio.play_audio("audio/systemAudio/soundChanged.ogg", self.volume)
+            self.audio.play_audio("audio/systemAudio/validation.ogg", self.volume)
 
     def delButtonSend(self, value, pattern):
         audioGet = AudioGetter(pattern)

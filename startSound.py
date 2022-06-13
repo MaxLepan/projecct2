@@ -1,6 +1,6 @@
-from classes.Audio import Audio
+from classes.Audio import audio
 
-audio = Audio()
+audio = audio
 
 mode = 0
 volume = 100
