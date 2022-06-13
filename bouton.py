@@ -66,7 +66,7 @@ while True:
             recTime = datetime.now()
         else:
             delta = datetime.now() - recTime
-            if int(delta.total_seconds()) > 1.0:
+            if int(delta.total_seconds()) > 0.5:
                 if canStart:
                     canStart = False
                     print("Declenche enregistrement")

@@ -66,11 +66,12 @@ class IntermediaryMode:
         audioFile = audioGet.get_audio()
         if "noMessageRecorded" in audioFile:
             self.getVolume()
-            self.audio.play_audio("audio/systemAudio/validation.ogg", self.volume)
+            self.audio.play_audio("audio/systemAudio/refus.ogg", self.volume)
             time.sleep(1)
             self.audio.play_audio("audio/systemAudio/nothingToDelete.ogg", self.volume)
         else:
             if value == "HIGH":
+                self.audio.play_audio("audio/systemAudio/validation.ogg", self.volume)
                 audioDelete = AudioStoring("", pattern)
                 audioDelete.deleteAudio()
             elif value == "1":
