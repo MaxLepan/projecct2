@@ -67,7 +67,6 @@ class SimpleEcho(WebSocket):
         elif stockage.mode == 1:
             expertMode.action(self.data, stockage.patternSaved, stockage.pattern)
             if sensor == "button17":
-                audio.play_audio("audio/systemAudio/radard.ogg", stockage.volume)
                 for client in clients:
                     if client != self:
                         client.send_message("Tensorflow ready")

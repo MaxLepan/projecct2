@@ -1,4 +1,3 @@
-import os
 from .Camera import Camera
 from .AudioGetter import AudioGetter
 from .Audio import audio
@@ -59,13 +58,14 @@ class IntermediaryMode:
             self.recording = False
             self.getVolume()
             self.audio.play_audio("audio/systemAudio/validation.ogg", self.volume)
+            self.audio.play_audio("audio/systemAudio/messageRegistered.ogg", self.volume)
 
     def delButtonSend(self, value, pattern):
         audioGet = AudioGetter(pattern)
         audioFile = audioGet.get_audio()
         if "noMessageRecorded" in audioFile:
             self.getVolume()
-            self.audio.play_audio("audio/systemAudio/soundChanged.ogg", self.volume)
+            self.audio.play_audio("audio/systemAudio/nothingToDelete.ogg", self.volume)
         else:
             if value == "HIGH":
                 audioDelete = AudioStoring("", pattern)
@@ -75,14 +75,13 @@ class IntermediaryMode:
 
     def cameraButtonSend(self):
         led = subprocess.Popen(["python", "./led.py"])
+        audio.play_audio("audio/systemAudio/radard.ogg", self.volume)
         self.camera.take_photo()
         time.sleep(5)
         led.terminate()
         
 
-
 """ intermediaryMode = IntermediaryMode("boo.png")
 intermediaryMode.action("button17:on", False, 0)
 intermediaryMode.action("button18:on", True, 1)
-intermediaryMode.action("button18:off", True, 1)
- """
+intermediaryMode.action("button18:off", True, 1) """

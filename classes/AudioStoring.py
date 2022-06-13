@@ -35,7 +35,6 @@ class AudioStoring:
         with open("./audio/audioStorage.json", "w") as file:
             json.dump(self.list_obj, file, indent=4, separators=(',', ': '))
 
-        self.audio.play_audio("audio/systemAudio/messageRegistered.ogg", self.volume)
 
     def deleteAudio(self):
         

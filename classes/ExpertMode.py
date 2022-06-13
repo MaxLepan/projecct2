@@ -75,6 +75,7 @@ class ExpertMode:
 
     def cameraButtonSend(self):
         led = subprocess.Popen(["python", "./led.py"])
+        audio.play_audio("audio/systemAudio/radard.ogg", self.volume)
         time.sleep(1)
         self.camera.take_photo()
         time.sleep(5)
