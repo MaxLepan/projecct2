@@ -8,4 +8,4 @@ python classes/Tensorflow.py &
 sleep 15
 python ./classes/ModeControl.py &
 python ./classes/VolumeControl.py &
-python startSound.py &
+python startSound.py 

@@ -39,7 +39,7 @@ while True:
     if int(time_now.total_seconds()) > 7:
         DelMode = False
     photoTime_now = datetime.now() - photoTime
-    if int(photoTime_now.total_seconds()) > 12:
+    if int(photoTime_now.total_seconds()) > 10:
         camActive = False
     # Takes photo
     if GPIO.input(17) == GPIO.HIGH:
@@ -52,10 +52,8 @@ while True:
             if camActive == False:
                 protocol = ProtocolBuilder("button17", "HIGH")
                 ws.send(protocol.buildProtocol())
-                time.sleep(2)
                 camActive = True
                 photoTime = datetime.now()
-                time.sleep(1)
 
     # Start audio recording
 
@@ -102,7 +100,6 @@ while True:
             if DelMode:
                 protocol = ProtocolBuilder("button4", "HIGH")
                 ws.send(protocol.buildProtocol())
-                time.sleep(2)
                 DelMode = False
             else:
                 protocol = ProtocolBuilder("button4", "1")
