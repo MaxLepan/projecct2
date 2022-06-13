@@ -37,7 +37,9 @@ class AudioStoring:
 
 
     def deleteAudio(self):
-        
+        if self.uid == 4:
+            self.audio.play_audio("audio/systemAudio/nothingToDelete.ogg", self.volume)
+            return 
         with open("./audio/audioStorage.json") as file:
 
             self.list_obj = json.load(file)
@@ -48,7 +50,7 @@ class AudioStoring:
                 if item.get(self.uid):
                     index = self.list_obj["audioFiles"].index(item)
                     del self.list_obj["audioFiles"][index]
-                    self.audio.play_audio("audio/systemAudio/messageDeleted.ogg", self.volume)
+                    self.audio.play_audio("audio/systemAudio/validation.ogg", self.volume)
                     itemFound = True
                     break
             if itemFound == False:
@@ -61,6 +63,6 @@ class AudioStoring:
         
         
 # Uncomment to run tests
-# audio_storing = AudioStoring("./audio/audioFiles/audio.ogg", 13)
-# audio_storing.store()
-# audio_storing.delete()
+#audio_storing = AudioStoring("./audio/audioFiles/audio.ogg", 4)
+#audio_storing.store()
+#audio_storing.delete()

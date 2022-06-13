@@ -53,13 +53,16 @@ class IntermediaryMode:
             else:
                 self.getVolume()
                 self.audio.play_audio("audio/systemAudio/refus.ogg", self.volume)
+                time.sleep(0.5)
+                self.audio.play_audio("audio/systemAudio/messageAlreadyRecorded.ogg", self.volume)
         elif value == "off" and self.recording:
             self.micro.stop_recording()
             self.recording = False
+            time.sleep(0.5)
             self.getVolume()
             self.audio.play_audio("audio/systemAudio/validation.ogg", self.volume)
-            time.sleep(1)
-            self.audio.play_audio("audio/systemAudio/messageRegistered.ogg", self.volume)
+            time.sleep(0.5)
+            self.audio.play_audio("audio/systemAudio/messageRecorded.ogg", self.volume)
 
     def delButtonSend(self, value, pattern):
         audioGet = AudioGetter(pattern)
@@ -67,13 +70,14 @@ class IntermediaryMode:
         if "noMessageRecorded" in audioFile:
             self.getVolume()
             self.audio.play_audio("audio/systemAudio/refus.ogg", self.volume)
-            time.sleep(1)
+            time.sleep(0.7)
             self.audio.play_audio("audio/systemAudio/nothingToDelete.ogg", self.volume)
         else:
             if value == "HIGH":
-                self.audio.play_audio("audio/systemAudio/validation.ogg", self.volume)
                 audioDelete = AudioStoring("", pattern)
                 audioDelete.deleteAudio()
+                time.sleep(0.5)
+                self.audio.play_audio("audio/systemAudio/messageDeleted.ogg", self.volume)
             elif value == "1":
                 self.audio.play_audio("audio/systemAudio/deleteConfirmationIntermediary.ogg", self.volume)
 
