@@ -80,8 +80,8 @@ class ExpertMode:
         audio.play_audio("audio/systemAudio/radard.ogg", self.volume)
         time.sleep(1)
         self.camera.take_photo()
-        time.sleep(5)
-        im = Image.open("../img/photo_analyse.jpg")
+        time.sleep(1)
+        im = Image.open("./img/photo_analyse.jpg")
         w,h= im.size
         cropped = im.crop((1000, 700, w/2+200, h/2+300))
         cropped.save("./img/photo_analyse.jpg", "JPEG")
