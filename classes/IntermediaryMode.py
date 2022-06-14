@@ -6,6 +6,7 @@ from .ProtocolReader import ProtocolReader
 from .Micro import Micro
 import subprocess
 import time
+from PIL import Image
 
 
 class IntermediaryMode:
@@ -49,6 +50,7 @@ class IntermediaryMode:
                 self.recording = True
                 self.getVolume()
                 self.audio.play_audio("audio/systemAudio/start-enregistrement.ogg", self.volume)
+                time.sleep(0.5)
                 self.micro.start_recording(pattern)
             else:
                 self.getVolume()
@@ -86,10 +88,10 @@ class IntermediaryMode:
         audio.play_audio("audio/systemAudio/radard.ogg", self.volume)
         self.camera.take_photo()
         time.sleep(5)
-        im = Image.open("./img/photo_analyse.jpg")
+        im = Image.open("./img/photo_analyse.png")
         w,h= im.size
         cropped = im.crop((1000, 700, w/2+200, h/2+300))
-        cropped.save("./img/photo_analyse.jpg", "JPEG")
+        cropped.save("./img/photo_analyse.png", "PNG")
         led.terminate()
         
 

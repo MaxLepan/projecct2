@@ -47,6 +47,7 @@ class Tutorial:
             self.audio.play_audio("audio/systemAudio/not-good-button.ogg", self.volume)
         elif value == "on":
             self.audio.play_audio("audio/systemAudio/start-enregistrement.ogg", self.volume)
+            time.sleep(0.5)
             self.micro.start_recording("tuto")
         elif value == "off":
             self.micro.stop_recording()

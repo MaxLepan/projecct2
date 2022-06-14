@@ -7,6 +7,7 @@ from .ProtocolReader import ProtocolReader
 from .Micro import Micro
 import subprocess
 import time
+from PIL import Image
 
 
 class ExpertMode:
@@ -50,6 +51,7 @@ class ExpertMode:
                 self.recording = True
                 self.getVolume()
                 self.audio.play_audio("audio/systemAudio/start-enregistrement.ogg", self.volume)
+                time.sleep(0.5)
                 self.micro.start_recording(pattern)
             else:
                 self.getVolume()
@@ -79,7 +81,7 @@ class ExpertMode:
         time.sleep(1)
         self.camera.take_photo()
         time.sleep(5)
-        im = Image.open("./img/photo_analyse.jpg")
+        im = Image.open("../img/photo_analyse.jpg")
         w,h= im.size
         cropped = im.crop((1000, 700, w/2+200, h/2+300))
         cropped.save("./img/photo_analyse.jpg", "JPEG")
