@@ -60,7 +60,7 @@ class SimpleEcho(WebSocket):
             audioGetter = AudioGetter(value)
             audioFile = audioGetter.get_audio()
             print(audioFile)
-            audio.play_audio(audioFile, stockage.volume)
+            audio.play_audio(audioFile, stockage.volume+25)
             stockage.patternSaved = True
 
 
