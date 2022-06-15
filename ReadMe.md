@@ -36,10 +36,8 @@ apt-get install sox
   - Nape sur le Pi
 - Micro/Audio:
   - Connecté par USB
-- Led pour la caméra (led smd rgb) ⚠️besoin de resistance !!:
-  - R sur GPIO 5 (pin 29) (resistance: 180Ω)
-  - G sur GPIO 6 (pin 31) (resistance 110Ω)
-  - B sur GPIO 13 (pin 33) (resistance 110Ω)
+- Led pour la caméra (led blanche) ⚠️besoin de resistance !!:
+  - Positive sur GPIO 5 (pin 29) (resistance: 100Ω)
   - Negative sur une masse
 
 ![breadboardLed](img/breadbord-led.jpg)
