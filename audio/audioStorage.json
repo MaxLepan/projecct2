@@ -1,13 +1,7 @@
 {
     "audioFiles": [
         {
-            "0": "audio/audioFiles/audio_2022-06-02_10-58-45.ogg"
-        },
-        {
-            "4": "audio/audioFiles/audio_2022-06-02_17-04-08.ogg"
-        },
-        {
-            "1": "audio/audioFiles/audio_2022-06-02_17-25-51.ogg"
+            "4": "audio/systemAudio/nothingToScan.ogg"
         }
     ]
 }

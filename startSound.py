@@ -1,4 +1,6 @@
-import os
+from classes.Audio import audio
+
+audio = audio
 
 mode = 0
 volume = 100
@@ -18,8 +20,9 @@ with open("./database/sound-volume.txt", "r") as volumeFile:
             volume = int(volumeLine)
 
 if mode == 1:
-    os.system(f"play -v {volume / 100} ./audio/systemAudio/start-mode-expert.ogg")
+    audio.play_audio("audio/systemAudio/start-mode-expert.ogg", volume)
 if mode == 2:
-    os.system(f"play -v {volume / 100} ./audio/systemAudio/start-mode-intermediary.ogg")
+    audio.play_audio("audio/systemAudio/start-mode-intermediary.ogg", volume)
 if mode == 3:
-    os.system(f"play -v {volume / 100} ./audio/systemAudio/start-mode-tutoriel.ogg")
+    audio.play_audio("audio/systemAudio/start-mode-tutorial.ogg", volume)
+

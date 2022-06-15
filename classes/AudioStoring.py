@@ -1,5 +1,5 @@
 import json
-import os
+from .Audio import audio
 
 
 class AudioStoring:
@@ -10,6 +10,7 @@ class AudioStoring:
         self.list_obj = []
         volumeFile = open("./database/sound-volume.txt", "r")
         self.volume = int(volumeFile.readline())
+        self.audio = audio
 
     def store(self):
 
@@ -34,10 +35,11 @@ class AudioStoring:
         with open("./audio/audioStorage.json", "w") as file:
             json.dump(self.list_obj, file, indent=4, separators=(',', ': '))
 
-        os.system("play audio/systemAudio/messageRegistered.ogg")
 
     def deleteAudio(self):
-        
+        if self.uid == 4:
+            self.audio.play_audio("audio/systemAudio/nothingToDelete.ogg", self.volume)
+            return 
         with open("./audio/audioStorage.json") as file:
 
             self.list_obj = json.load(file)
@@ -48,22 +50,19 @@ class AudioStoring:
                 if item.get(self.uid):
                     index = self.list_obj["audioFiles"].index(item)
                     del self.list_obj["audioFiles"][index]
-                    os.system(f"play -v {self.volume/100} audio/systemAudio/messageDeleted.ogg")
+                    self.audio.play_audio("audio/systemAudio/validation.ogg", self.volume)
                     itemFound = True
                     break
             if itemFound == False:
                 print("no mess del")
-                os.system(f"play -v {self.volume/100} audio/systemAudio/nothingToDelete.ogg")
-        print("aaaaaaaaaaaaaaaaaaaaaaa", self.list_obj)
+                self.audio.play_audio("audio/systemAudio/nothingToDelete.ogg", self.volume)
                 
         with open("./audio/audioStorage.json", "w") as file:
             json.dump(self.list_obj, file, indent=4, separators=(',', ': '))
 
-
-        print("Deleted")
         
         
 # Uncomment to run tests
-# audio_storing = AudioStoring("./audio/audioFiles/audio.ogg", 13)
-# audio_storing.store()
-# audio_storing.delete()
+#audio_storing = AudioStoring("./audio/audioFiles/audio.ogg", 4)
+#audio_storing.store()
+#audio_storing.delete()

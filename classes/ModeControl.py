@@ -3,7 +3,7 @@ from time import sleep
 import os
 import time
 from datetime import datetime
-from Audio import Audio
+from Audio import audio
 
 
 class ModeControl:
@@ -22,7 +22,7 @@ class ModeControl:
         self.lastValue = self.counter
         self.lastMode = self.initMode()
         self.mode = self.initMode()
-        self.audio = Audio()
+        self.audio = audio
 
     def start(self):
         print(self.name, " is working !")

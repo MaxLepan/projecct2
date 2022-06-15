@@ -1,12 +1,13 @@
 import os
 from .Camera import Camera
 from .AudioGetter import AudioGetter
-from .Audio import Audio
+from .Audio import audio
 from .AudioStoring import AudioStoring
 from .ProtocolReader import ProtocolReader
 from .Micro import Micro
 import subprocess
 import time
+from PIL import Image
 
 
 class ExpertMode:
@@ -15,7 +16,7 @@ class ExpertMode:
         self.camera = Camera(file)
         self.volume = 100
         self.micro = Micro()
-        self.audio = Audio()
+        self.audio = audio
         self.recording = False
 
     def getVolume(self):
@@ -33,8 +34,6 @@ class ExpertMode:
         sensor = protocol.sensor
         value = protocol.value
         self.getVolume()
-        print(sensor)
-        print(value)
         if sensor == "button18" and patternSaved:
             self.recButtonSend(value, pattern)
         if sensor == "button17":
@@ -51,23 +50,23 @@ class ExpertMode:
             if "noMessageRecorded" in audioFile:
                 self.recording = True
                 self.getVolume()
-                self.audio.play_audio("audio/systemAudio/soundChanged.ogg", self.volume)
+                self.audio.play_audio("audio/systemAudio/start-enregistrement.ogg", self.volume)
                 self.micro.start_recording(pattern)
             else:
                 self.getVolume()
-                self.audio.play_audio("audio/systemAudio/soundChanged.ogg", self.volume)
+                self.audio.play_audio("audio/systemAudio/refus.ogg", self.volume)
         elif value == "off" and self.recording:
             self.micro.stop_recording()
             self.recording = False
             self.getVolume()
-            self.audio.play_audio("audio/systemAudio/soundChanged.ogg", self.volume)
+            self.audio.play_audio("audio/systemAudio/validation.ogg", self.volume)
 
     def delButtonSend(self, value, pattern):
         audioGet = AudioGetter(pattern)
         audioFile = audioGet.get_audio()
         if "noMessageRecorded" in audioFile:
             self.getVolume()
-            self.audio.play_audio("audio/systemAudio/soundChanged.ogg", self.volume)
+            self.audio.play_audio("audio/systemAudio/refus.ogg", self.volume)
         else:
             if value == "HIGH":
                 audioDelete = AudioStoring("", pattern)
@@ -77,9 +76,13 @@ class ExpertMode:
 
     def cameraButtonSend(self):
         led = subprocess.Popen(["python", "./led.py"])
-        time.sleep(1)
+        audio.play_audio("audio/systemAudio/radard.ogg", self.volume)
         self.camera.take_photo()
-        time.sleep(5)
+        time.sleep(4)
+        im = Image.open("./img/photo_analyse.png")
+        w,h= im.size
+        cropped = im.crop((1000, 700, w/2+200, h/2+300))
+        cropped.save("./img/photo_analyse.png", "PNG")
         led.terminate()
         
 

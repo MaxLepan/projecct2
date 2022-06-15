@@ -1,6 +1,6 @@
 import time
 import websocket
-import os
+from classes.Audio import audio
 import RPi.GPIO as GPIO
 from classes.ProtocolBuilder import ProtocolBuilder
 from datetime import datetime
@@ -12,6 +12,7 @@ GPIO.setup(17, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 GPIO.setup(18, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 GPIO.setup(4, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 ws = websocket.create_connection("ws://localhost:8080")
+audio = audio
 
 DelMode = False
 deleteTime = datetime.now()
@@ -19,6 +20,9 @@ saveMode = False
 recTime = datetime.now()
 canStart = True
 isRecording = False
+photoTime = datetime.now()
+camActive = False
+buttonCPressed = False
 
 button18Pressed = False
 button4Pressed = False
@@ -34,13 +38,22 @@ while True:
     time_now = datetime.now() - deleteTime
     if int(time_now.total_seconds()) > 7:
         DelMode = False
+    photoTime_now = datetime.now() - photoTime
+    if int(photoTime_now.total_seconds()) > 10:
+        camActive = False
     # Takes photo
     if GPIO.input(17) == GPIO.HIGH:
-        print("pushed")
-        protocol = ProtocolBuilder("button17", "HIGH")
-        ws.send(protocol.buildProtocol())
-        while GPIO.input(17) == GPIO.HIGH:
-            time.sleep(0.1)
+        if buttonCPressed == False:
+            buttonCPressed = True
+
+    if GPIO.input(17) == GPIO.LOW:
+         if buttonCPressed == True:
+            buttonCPressed = False
+            if camActive == False:
+                protocol = ProtocolBuilder("button17", "HIGH")
+                ws.send(protocol.buildProtocol())
+                camActive = True
+                photoTime = datetime.now()
 
     # Start audio recording
 
@@ -51,26 +64,12 @@ while True:
             recTime = datetime.now()
         else:
             delta = datetime.now() - recTime
-            if int(delta.total_seconds()) > 1.0:
+            if int(delta.total_seconds()) > 0.5:
                 if canStart:
                     canStart = False
                     print("Declenche enregistrement")
                     protocol = ProtocolBuilder("button18", "on")
                     ws.send(protocol.buildProtocol())
-                    
-        
-        """
-        if (isRecording == False):
-            
-            if canStart == True:
-                protocol = ProtocolBuilder("button18", "on")
-                ws.send(protocol.buildProtocol())
-                recDidStart = True
-                saveMode = True
-                
-                #while GPIO.input(18) == GPIO.HIGH:
-                #    time.sleep(0.1)
-        """
 
     # Stops audio recording
     if GPIO.input(18) == GPIO.LOW:
@@ -80,29 +79,18 @@ while True:
             delta = datetime.now() - recTime
             if int(delta.total_seconds()) < 0.20:
                 print("Appuie court")
-                os.system(f"play -v {volume/100} audio/systemAudio/keepPushingToRecord.ogg")
+                audio.play_audio("audio/systemAudio/keepPushingToRecord.ogg", volume)
             else:
                 print("Fin de l'enregistrement")
                 canStart = True
                 protocol = ProtocolBuilder("button18", "off")
                 ws.send(protocol.buildProtocol())
 
-        """
-        
-            saveMode = False
-            
-        else:
-            canStart = True
-        elif recDidStart:
-            recDidStart = False
-            protocol = ProtocolBuilder("button18", "off")
-            print(protocol.buildProtocol())
-            ws.send(protocol.buildProtocol())
-        """ 
         time.sleep(0.2)
 
     # Delete audio file
     if GPIO.input(4) == GPIO.HIGH:
+        print('boo')
         if button4Pressed == False:
             button4Pressed = True
 
@@ -111,17 +99,13 @@ while True:
             button4Pressed = False
             if DelMode:
                 protocol = ProtocolBuilder("button4", "HIGH")
-                print("Send Suprression")
                 ws.send(protocol.buildProtocol())
-                time.sleep(2)
                 DelMode = False
             else:
                 protocol = ProtocolBuilder("button4", "1")
-                print("Ask for Suprression")
                 ws.send(protocol.buildProtocol())
                 DelMode = True
                 deleteTime = datetime.now()
                 time.sleep(0.2)
-
 
     time.sleep(0.2)
